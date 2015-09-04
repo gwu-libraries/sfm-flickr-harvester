@@ -1,0 +1,4 @@
+warc==0.2.1
+flickrapi==2.1.1
+pika==0.10.0
+mock==1.3.0
