@@ -43,56 +43,31 @@ or in environment variables (`FLICKR_KEY` and `FLICKR_SECRET`).  An example `tes
 ## Harvest start messages
 Following is information necessary to construct a harvest start message for the flickr harvester.
 
-### Harvest types
+### User harvest type
 
-#### User
-
-Type:
-: flickr_user
+Type: flickr_user
 
 Api methods called:
-: * people.findByUsername to get nsid if username provided
+  * people.findByUsername to get nsid if username provided
   * people.getInfo
   * people.getPublicPhotos
   * photos.getInfo for each photo
 
 Required parameters:
-: * username or nsid
+  * username or nsid
 
 Optional parameters:
-: * incremental: True (default) or False
+  * incremental: True (default) or False
   * sizes:  List of [photo size labels](https://www.flickr.com/services/api/flickr.photos.getSizes.html).  Default is Thumbnail, Large, and Original.
 
 Summary:
-: * user
+  * user
   * photo
 
-Extracted urls:
-: Urls are generated for each photo for each size.
-
-#### Photo
-
-Type:
-: flickr_photo
-
-Api methods called:
-: * photos.getInfo for each photo
-
-Required parameters:
-: * photo_id
-  * secret
-
-Optional parameters:
-: * sizes:  List of [photo size labels](https://www.flickr.com/services/api/flickr.photos.getSizes.html).  Default is Thumbnail, Large, and Original.
-
-Summary:
-: * photo
-
-Extracted urls:
-: Urls are generated for the photo for each size.
+Extracted urls: Urls are generated for each photo for each size.
 
 ### Authentication
 
 Required parameters:
-: * key
+  * key
   * secret

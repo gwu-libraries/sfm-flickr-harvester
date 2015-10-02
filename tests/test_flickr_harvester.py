@@ -292,86 +292,6 @@ class TestFlickrConsumer(tests.TestCase):
         self.assertIsNone(body["summary"].get("user"))
         self.assertIsNone(body["summary"].get("photo"))
 
-    def test_photo_by_message(self):
-        message = {
-            "id": "test:3",
-            "type": "flickr_photo",
-            "seeds": [
-                {
-                    "photo_id": "16796603565",
-                    "secret": "90f7d5c74c",
-                    "sizes": ["Thumbnail", "Large", "Original"]
-                }
-            ],
-            "credentials": {
-                "key": tests.FLICKR_KEY,
-                "secret": tests.FLICKR_SECRET
-            },
-            "collection": {
-                "id": "test_collection",
-                "path": "%s/test_collection" % tempfile.mkdtemp()
-            }
-        }
-
-        self.consumer._callback(self.fake_channel, self.fake_method, None, json.dumps(message))
-        self.assertEqual(3, len(self.fake_channel.messages))
-
-        # warc_created message
-        exchange, routing_key, properties, body = self.fake_channel.messages[0]
-        self.assertEqual("warc_created", routing_key)
-        self.assertEqual(1, len(body["apis_called"]))
-        self.assertEqual("photos.getInfo", body["apis_called"][0]["api"]["method"])
-
-        #And a harvest.start.web message
-        exchange, routing_key, properties, body = self.fake_channel.messages[1]
-        self.assertEqual("harvest.start.web", routing_key)
-        self.assertEqual("web", body["type"])
-        self.assertEqual(3, len(body["seeds"]))
-        self.assertTrue(body["seeds"][0]["token"])
-        self.assertIsNotNone(body["id"])
-        self.assertEqual("test:3", body["parent_id"])
-
-        #And a status message
-        exchange, routing_key, properties, body = self.fake_channel.messages[2]
-        self.assertEqual("harvest.status.flickr.flickr_photo", routing_key)
-        self.assertIsNone(body["summary"].get("user"))
-        self.assertEqual(1, body["summary"]["photo"])
-
-    def test_not_found_photo_by_message(self):
-        message = {
-            "id": "test:4",
-            "type": "flickr_photo",
-            "seeds": [
-                {
-                    "photo_id": "x16796603565",
-                    "secret": "90f7d5c74c",
-                    "sizes": ["Thumbnail", "Large", "Original"]
-                }
-            ],
-            "credentials": {
-                "key": tests.FLICKR_KEY,
-                "secret": tests.FLICKR_SECRET
-            },
-            "collection": {
-                "id": "test_collection",
-                "path": "%s/test_collection" % tempfile.mkdtemp()
-            }
-        }
-
-        self.consumer._callback(self.fake_channel, self.fake_method, None, json.dumps(message))
-        self.assertEqual(1, len(self.fake_channel.messages))
-
-        #No warc_created message
-        #No harvest.start.web message
-
-        #And a status message with an error
-        exchange, routing_key, properties, body = self.fake_channel.messages[0]
-        self.assertEqual("harvest.status.flickr.flickr_photo", routing_key)
-        self.assertEqual("test:4", body["id"])
-        self.assertEqual("completed failure", body["status"])
-        self.assertEqual(1, len(body["errors"]))
-        self.assertEqual("FLICKR_NOT_FOUND", body["errors"][0]["code"])
-
     def test_not_found_user_by_message(self):
         message = {
             "id": "test:5",
@@ -470,14 +390,13 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
         self.connection.close()
 
     def test_harvest(self):
-        result_msg = {
+        harvest_msg = {
             "id": "test:1",
-            "type": "flickr_photo",
+            "type": "flickr_user",
             "seeds": [
                 {
-                    "photo_id": "16796603565",
-                    "secret": "90f7d5c74c",
-                    "sizes": ["Thumbnail", "Large", "Original"]
+                    "nsid": "131866249@N02",
+                    "sizes": ["Thumbnail", "Original"]
                 }
             ],
             "credentials": {
@@ -491,10 +410,10 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             }
         }
         self.channel.basic_publish(exchange=flickr_harvester.EXCHANGE,
-                                   routing_key="harvest.start.flickr.flickr_photo",
+                                   routing_key="harvest.start.flickr.flickr_user",
                                    properties=pika.spec.BasicProperties(content_type="application/json",
                                                                         delivery_mode=2),
-                                   body=json.dumps(result_msg, indent=4))
+                                   body=json.dumps(harvest_msg, indent=4))
 
         #Now wait for result message.
         result_body = None
@@ -513,20 +432,20 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
         #Success
         self.assertEqual("completed success", result_msg["status"])
         #1 photo
-        self.assertEqual(1, result_msg["summary"]["photo"])
+        self.assertEqual(1, result_msg["summary"]["user"])
 
         #Web harvest message.
         method_frame, header_frame, web_harvest_body = self.channel.basic_get(self.web_harvest_queue)
         self.assertTrue(web_harvest_body, "No web harvest message.")
         web_harvest_msg = json.loads(web_harvest_body)
-        self.assertEqual(3, len(web_harvest_msg["seeds"]))
+        self.assertEqual(24, len(web_harvest_msg["seeds"]))
 
         #Warc created message.
         method_frame, header_frame, warc_created_body = self.channel.basic_get(self.warc_created_queue)
         self.assertTrue(web_harvest_body, "No warc created message.")
         warc_created_msg = json.loads(warc_created_body)
-        self.assertEqual(1, len(warc_created_msg["apis_called"]))
-        self.assertEqual("photos.getInfo", warc_created_msg["apis_called"][0]["api"]["method"])
+        self.assertEqual(14, len(warc_created_msg["apis_called"]))
+        self.assertEqual("people.getInfo", warc_created_msg["apis_called"][0]["api"]["method"])
 
 
 class FakeChannel():

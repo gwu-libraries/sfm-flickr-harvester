@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 FLICKR_HOST = "https://api.flickr.com"
 QUEUE = "flickr_harvester"
 EXCHANGE = "sfm_exchange"
-ROUTING_KEY = "sfm_exchange"
+ROUTING_KEY = "harvest.start.flickr.*"
 
 
 class FlickrHarvester():
@@ -262,18 +262,6 @@ class FlickrConsumer():
                     sizes = seed.get("sizes")
                     harv_resp, warc_records = harvester.harvest_user(username=username,
                                                                      nsid=nsid, incremental=incremental, sizes=sizes)
-                    #If success, write to warc
-                    if harv_resp:
-                        warc_writer.write_records(warc_records)
-                        merged_api_called_message_parts.extend(self._create_api_called_message_parts(warc_records))
-                    #Merge harv_resp
-                    merged_harv_resp.merge(harv_resp)
-            elif harvest_type == "flickr_photo":
-                for seed in message.get("seeds"):
-                    photo_id = seed.get("photo_id")
-                    secret = seed.get("secret")
-                    sizes = seed.get("sizes")
-                    harv_resp, warc_records = harvester.harvest_photo(photo_id, secret, sizes)
                     #If success, write to warc
                     if harv_resp:
                         warc_writer.write_records(warc_records)
