@@ -125,8 +125,8 @@ class FlickrHarvester():
 
         return harv_resp, warc_records
 
-    def harvest_photo(self, photo_id, secret, sizes=None):
-        log.info("Harvesting photo %s. Secret=%s.", photo_id, secret)
+    def harvest_photo(self, photo_id, secret=None, sizes=None):
+        log.info("Harvesting photo %s.", photo_id)
 
         if not sizes:
             sizes = ("Thumbnail", "Large", "Original")
