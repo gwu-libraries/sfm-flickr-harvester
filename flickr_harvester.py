@@ -362,7 +362,7 @@ class FlickrConsumer():
             }
         }
         for url in urls:
-            message["seeds"].append({"url": url})
+            message["seeds"].append({"token": url})
         FlickrConsumer._publish_message(channel, "harvest.start.web", message)
 
     @staticmethod

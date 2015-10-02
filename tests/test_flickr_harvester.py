@@ -251,7 +251,7 @@ class TestFlickrConsumer(tests.TestCase):
         self.assertEqual("harvest.start.web", routing_key)
         self.assertEqual("web", body["type"])
         self.assertEqual(24, len(body["seeds"]))
-        self.assertTrue(body["seeds"][0]["url"])
+        self.assertTrue(body["seeds"][0]["token"])
         self.assertIsNotNone(body["id"])
         self.assertEqual("test:1", body["parent_id"])
 
@@ -327,7 +327,7 @@ class TestFlickrConsumer(tests.TestCase):
         self.assertEqual("harvest.start.web", routing_key)
         self.assertEqual("web", body["type"])
         self.assertEqual(3, len(body["seeds"]))
-        self.assertTrue(body["seeds"][0]["url"])
+        self.assertTrue(body["seeds"][0]["token"])
         self.assertIsNotNone(body["id"])
         self.assertEqual("test:3", body["parent_id"])
 
