@@ -204,7 +204,7 @@ class TestFlickrConsumer(tests.TestCase):
                     "sizes": ["Thumbnail", "Original"]
                 }
             ],
-            "auths": {
+            "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },
@@ -274,7 +274,7 @@ class TestFlickrConsumer(tests.TestCase):
             "type": "flickr_user",
             "seeds": [
             ],
-            "auths": {
+            "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },
@@ -303,7 +303,7 @@ class TestFlickrConsumer(tests.TestCase):
                     "sizes": ["Thumbnail", "Large", "Original"]
                 }
             ],
-            "auths": {
+            "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },
@@ -348,7 +348,7 @@ class TestFlickrConsumer(tests.TestCase):
                     "sizes": ["Thumbnail", "Large", "Original"]
                 }
             ],
-            "auths": {
+            "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },
@@ -382,7 +382,7 @@ class TestFlickrConsumer(tests.TestCase):
                     "sizes": ["Thumbnail", "Original"]
                 }
             ],
-            "auths": {
+            "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },
@@ -415,7 +415,7 @@ class TestFlickrConsumer(tests.TestCase):
                     "sizes": ["Thumbnail", "Original"]
                 }
             ],
-            "auths": {
+            "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },
@@ -480,7 +480,7 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
                     "sizes": ["Thumbnail", "Large", "Original"]
                 }
             ],
-            "auths": {
+            "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },

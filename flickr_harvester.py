@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 FLICKR_HOST = "https://api.flickr.com"
 QUEUE = "flickr_harvester"
 EXCHANGE = "sfm_exchange"
-ROUTING_KEY = "harvest.start.flickr.*"
+ROUTING_KEY = "sfm_exchange"
 
 
 class FlickrHarvester():
@@ -244,8 +244,8 @@ class FlickrConsumer():
         warc_id, warc_path, created_date = generate_warc_info(collection_path, collection_id, "flickr")
 
         #Setup FlickrHarvester
-        key = message["auths"]["key"]
-        secret = message["auths"]["secret"]
+        key = message["credentials"]["key"]
+        secret = message["credentials"]["secret"]
         harvester = FlickrHarvester(key, secret, state_store=self._state_store)
 
         with WarcWriterOpen(warc_path) as warc_writer:
