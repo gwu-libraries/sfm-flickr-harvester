@@ -318,7 +318,7 @@ class FlickrConsumer():
             "warc": {
                 "id": warc_id,
                 "path": warc_path,
-                "created_date": created_date.isoformat(),
+                "date_created": created_date.isoformat(),
                 "bytes": os.path.getsize(warc_path),
                 "sha1": hashlib.sha1(open(warc_path).read()).hexdigest()
             },
@@ -332,7 +332,7 @@ class FlickrConsumer():
         for request_record, response_record in zip(*[iter(warc_records)]*2):
             api_method, api_parameters = parse_flickr_api_url(request_record.url)
             message_parts.append({
-                "harvested_date": datetime.datetime.strptime(response_record.date, '%Y-%m-%dT%H:%M:%SZ').isoformat(),
+                "date_harvested": datetime.datetime.strptime(response_record.date, '%Y-%m-%dT%H:%M:%SZ').isoformat(),
                 "url": request_record.url,
                 "api": {
                     "platform": "flickr",
@@ -374,8 +374,8 @@ class FlickrConsumer():
             "infos": harv_resp.infos,
             "warnings": harv_resp.warnings,
             "errors": harv_resp.errors,
-            "start_date": start_date.isoformat(),
-            "end_date": datetime.datetime.now().isoformat(),
+            "date_started": start_date.isoformat(),
+            "date_ended": datetime.datetime.now().isoformat(),
             "summary": harv_resp.summary
         }
         #Routing key may be none

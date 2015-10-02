@@ -239,7 +239,7 @@ class TestFlickrConsumer(tests.TestCase):
         self.assertEqual("people.getInfo", body["apis_called"][0]["api"]["method"])
         self.assertEqual(["131866249@N02"], body["apis_called"][0]["api"]["parameters"]["user_id"])
         self.assertTrue(body["apis_called"][0]["url"].startswith("https://api.flickr.com/services/rest"))
-        self.assertTrue(datetime.datetime.strptime(body["apis_called"][0]["harvested_date"], "%Y-%m-%dT%H:%M:%S"))
+        self.assertTrue(datetime.datetime.strptime(body["apis_called"][0]["date_harvested"], "%Y-%m-%dT%H:%M:%S"))
         self.assertTrue(body["apis_called"][0]["response_record"]["id"])
         #And then a bunch of photos.getInfo
         self.assertEqual("photos.getInfo", body["apis_called"][1]["api"]["method"])
@@ -263,8 +263,8 @@ class TestFlickrConsumer(tests.TestCase):
         self.assertEqual([], body["infos"])
         self.assertEqual([], body["warnings"])
         self.assertEqual([], body["errors"])
-        self.assertTrue(body["end_date"])
-        self.assertTrue(body["start_date"])
+        self.assertTrue(body["date_ended"])
+        self.assertTrue(body["date_started"])
         self.assertEqual(1, body["summary"]["user"])
         self.assertEqual(12, body["summary"]["photo"])
 
