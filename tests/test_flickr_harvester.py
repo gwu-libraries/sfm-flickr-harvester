@@ -22,10 +22,12 @@ class TestFlickrHarvester(tests.TestCase):
                                                           state_store=self.state_store)
 
     def test_bad_request(self):
-        harv_resp, warc_records = self.harvester.harvest_user()
+        harv_resp, warc_records, nsid, username = self.harvester.harvest_user()
         self.assertFalse(harv_resp)
         self.assertEqual(harv_resp.errors[0]["code"], "FLICKR_BAD_REQUEST")
         self.assertFalse(harv_resp.warnings)
+        self.assertIsNone(nsid)
+        self.assertIsNone(username)
 
     def test_lookup_nsid(self):
         self.assertEqual("131866249@N02", self.harvester.lookup_nsid("justin.littman"))
@@ -38,10 +40,15 @@ class TestFlickrHarvester(tests.TestCase):
 
     def test_user_and_photos(self):
         #Using a smaller per_page for testing
-        harv_resp, warc_records = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=False,
-                                                              sizes=("Thumbnail", "Original"))
+        harv_resp, warc_records, nsid, username = self.harvester.harvest_user(username="justin.littman", per_page=5,
+                                                                              incremental=False,
+                                                                              sizes=("Thumbnail", "Original"))
         #Success
         self.assertTrue(harv_resp)
+
+        #Username/nsid
+        self.assertEqual("131866249@N02", nsid)
+        self.assertEqual("justin.littman", username)
 
         #Warc records
         #1 people.getInfo x 2
@@ -68,12 +75,32 @@ class TestFlickrHarvester(tests.TestCase):
         self.assertEqual(1, harv_resp.summary["user"])
         self.assertEqual(12, harv_resp.summary["photo"])
 
+    def test_user_and_photos_by_nsid(self):
+        #Providing nsid and username. Note that username is not the current username.
+        harv_resp, warc_records, nsid, username = self.harvester.harvest_user(nsid="131866249@N02",
+                                                                              username="not.justin.littman", per_page=5,
+                                                                              incremental=False,
+                                                                              sizes=("Thumbnail", "Original"))
+        #Success
+        self.assertTrue(harv_resp)
+
+        #Username/nsid
+        self.assertEqual("131866249@N02", nsid)
+        self.assertEqual("justin.littman", username)
+
+        #Warc records
+        #1 people.getInfo x 2
+        #3 pages people.getPublicPhotos x 2
+        #12 photos.getInfo x 2
+        self.assertEqual(32, len(warc_records))
+
     def test_incremental_user_no_prev_state(self):
         #No state set in state store
 
         #Using a smaller per_page for testing
-        harv_resp, warc_records = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
-                                                              sizes=("Thumbnail", "Original"))
+        harv_resp, warc_records, _, _ = self.harvester.harvest_user(username="justin.littman", per_page=5,
+                                                                    incremental=True,
+                                                                    sizes=("Thumbnail", "Original"))
         #Success
         self.assertTrue(harv_resp)
 
@@ -92,7 +119,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16609036938")
 
         #Using a smaller per_page for testing
-        harv_resp, warc_records = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
+        harv_resp, warc_records, _, _ = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
                                                               sizes=("Thumbnail", "Original"))
         #Success
         self.assertTrue(harv_resp)
@@ -117,7 +144,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16609252680")
 
         #Using a smaller per_page for testing
-        harv_resp, warc_records = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
+        harv_resp, warc_records, _, _ = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
                                                               sizes=("Thumbnail", "Original"))
         #Success
         self.assertTrue(harv_resp)
@@ -144,7 +171,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16176690903")
 
         #Using a smaller per_page for testing
-        harv_resp, warc_records = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
+        harv_resp, warc_records, _, _ = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
                                                               sizes=("Thumbnail", "Original"))
         #Success
         self.assertTrue(harv_resp)
@@ -167,7 +194,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16610484809")
 
         #Using a smaller per_page for testing
-        harv_resp, warc_records = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
+        harv_resp, warc_records, _, _ = self.harvester.harvest_user(username="justin.littman", per_page=5, incremental=True,
                                                               sizes=("Thumbnail", "Original"))
         #Success
         self.assertTrue(harv_resp)
@@ -269,6 +296,7 @@ class TestFlickrConsumer(tests.TestCase):
         self.assertTrue(body["date_started"])
         self.assertEqual(1, body["summary"]["user"])
         self.assertEqual(12, body["summary"]["photo"])
+        self.assertEqual("justin.littman", body["token_updates"]["131866249@N02"])
 
     def test_nothing_harvested_by_message(self):
         message = {

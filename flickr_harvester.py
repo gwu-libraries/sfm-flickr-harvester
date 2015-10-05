@@ -33,6 +33,8 @@ class FlickrHarvester():
         #Per_page is intended for testing only.
         harv_resp = HarvestResponse()
         warc_records = []
+        new_username = None
+
         if not (username or nsid):
             harv_resp.errors.append({"code": "FLICKR_BAD_REQUEST", "message": "Username or nsid not provided."})
             harv_resp.success = False
@@ -74,6 +76,8 @@ class FlickrHarvester():
                 warc_records.append(response_record)
                 #Update summary
                 harv_resp.increment_summary("user")
+                #Extract username
+                new_username = json_resp["person"]["username"]["_content"]
 
                 #Get first page of public photos to get number of pages and photos
                 json_resp = self.api.people.getPublicPhotos(user_id=nsid, format='parsed-json', per_page=per_page)
@@ -123,7 +127,7 @@ class FlickrHarvester():
                     log.debug("New last photo id is %s", new_last_photo_id)
                     self.state_store.set_state(__name__, "%s.last_photo_id" % nsid, new_last_photo_id)
 
-        return harv_resp, warc_records
+        return harv_resp, warc_records, nsid, new_username
 
     def harvest_photo(self, photo_id, secret=None, sizes=None):
         log.info("Harvesting photo %s.", photo_id)
@@ -220,7 +224,7 @@ class FlickrConsumer():
 
         return self._callback(None, None, None, seed_str)
 
-    def _callback(self, channel, method, properties, body):
+    def _callback(self, channel, method, _, body):
         """
         Callback for receiving harvest message.
 
@@ -248,6 +252,11 @@ class FlickrConsumer():
         secret = message["credentials"]["secret"]
         harvester = FlickrHarvester(key, secret, state_store=self._state_store)
 
+        #Map of uids (nsids) to tokens (usernames) for which tokens have been found to have changed.
+        token_updates = {}
+        #Map of tokens to uids for tokens for which uids have been found.
+        uids = {}
+
         with WarcWriterOpen(warc_path) as warc_writer:
             merged_harv_resp = HarvestResponse()
             #Collecting api called message parts to add to warc created message
@@ -262,8 +271,16 @@ class FlickrConsumer():
                 for seed in message.get("seeds", []):
                     username = seed.get("token")
                     nsid = seed.get("uid")
-                    harv_resp, warc_records = harvester.harvest_user(username=username,
-                                                                     nsid=nsid, incremental=incremental, sizes=sizes)
+                    harv_resp, warc_records, new_nsid, new_username = harvester.harvest_user(username=username,
+                                                                                             nsid=nsid,
+                                                                                             incremental=incremental,
+                                                                                             sizes=sizes)
+                    #Update token_updates and uids with the nsid/username found from api.
+                    if username != new_username:
+                        token_updates[new_nsid] = new_username
+                    if not nsid:
+                        uids[username] = new_nsid
+
                     #If success, write to warc
                     if harv_resp:
                         warc_writer.write_records(warc_records)
@@ -286,12 +303,12 @@ class FlickrConsumer():
         #Send a new harvest message for urls
         if merged_harv_resp.urls:
             self._send_web_harvest_message(channel, harvest_id, collection_id, collection_path,
-                                               merged_harv_resp.urls_as_set())
+                                           merged_harv_resp.urls_as_set())
         else:
             log.debug("No url seeds for %s", warc_id)
 
         #Send result message
-        self._send_status_message(channel, harvest_id, merged_harv_resp, harvest_type, start_date)
+        self._send_status_message(channel, harvest_id, merged_harv_resp, harvest_type, start_date, token_updates, uids)
 
         return merged_harv_resp
 
@@ -356,7 +373,7 @@ class FlickrConsumer():
         FlickrConsumer._publish_message(channel, "harvest.start.web", message)
 
     @staticmethod
-    def _send_status_message(channel, harvest_id, harv_resp, type, start_date):
+    def _send_status_message(channel, harvest_id, harv_resp, harvest_type, start_date, token_updates, uids):
         #Just add additional info to job message
         message = {
             "id": harvest_id,
@@ -366,10 +383,12 @@ class FlickrConsumer():
             "errors": harv_resp.errors,
             "date_started": start_date.isoformat(),
             "date_ended": datetime.datetime.now().isoformat(),
-            "summary": harv_resp.summary
+            "summary": harv_resp.summary,
+            "token_updates": token_updates,
+            "uids": uids
         }
         #Routing key may be none
-        status_routing_key = "harvest.status.flickr.%s" % type
+        status_routing_key = "harvest.status.flickr.%s" % harvest_type
         FlickrConsumer._publish_message(channel, status_routing_key, message)
 
     @staticmethod
