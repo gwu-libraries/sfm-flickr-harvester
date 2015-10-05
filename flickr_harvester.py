@@ -255,11 +255,13 @@ class FlickrConsumer():
             harvest_type = message.get("type")
             log.debug("Seed type is %s", harvest_type)
             if harvest_type == "flickr_user":
-                for seed in message.get("seeds"):
-                    username = seed.get("username")
-                    nsid = seed.get("nsid")
-                    incremental = seed.get("incremental", True)
-                    sizes = seed.get("sizes")
+                #Options
+                options = message.get("options", {})
+                incremental = options.get("incremental", True)
+                sizes = options.get("sizes")
+                for seed in message.get("seeds", []):
+                    username = seed.get("token")
+                    nsid = seed.get("uid")
                     harv_resp, warc_records = harvester.harvest_user(username=username,
                                                                      nsid=nsid, incremental=incremental, sizes=sizes)
                     #If success, write to warc

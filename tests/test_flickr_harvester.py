@@ -200,10 +200,12 @@ class TestFlickrConsumer(tests.TestCase):
             "type": "flickr_user",
             "seeds": [
                 {
-                    "nsid": "131866249@N02",
-                    "sizes": ["Thumbnail", "Original"]
+                    "uid": "131866249@N02",
                 }
             ],
+            "options": {
+                "sizes": ["Thumbnail", "Original"]
+            },
             "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
@@ -298,8 +300,7 @@ class TestFlickrConsumer(tests.TestCase):
             "type": "flickr_user",
             "seeds": [
                 {
-                    "nsid": "x131866249@N02",
-                    "sizes": ["Thumbnail", "Original"]
+                    "uid": "x131866249@N02",
                 }
             ],
             "credentials": {
@@ -331,8 +332,7 @@ class TestFlickrConsumer(tests.TestCase):
             "type": "flickr_user",
             "seeds": [
                 {
-                    "username": "not_a_user",
-                    "sizes": ["Thumbnail", "Original"]
+                    "token": "not_a_user",
                 }
             ],
             "credentials": {
@@ -395,10 +395,12 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             "type": "flickr_user",
             "seeds": [
                 {
-                    "nsid": "131866249@N02",
-                    "sizes": ["Thumbnail", "Original"]
+                    "uid": "131866249@N02"
                 }
             ],
+            "options": {
+                "sizes": ["Thumbnail", "Original"]
+            },
             "credentials": {
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET

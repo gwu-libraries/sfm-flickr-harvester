@@ -25,3 +25,5 @@ integration_env_available = mq_port_available and mq_username and mq_password
 
 class TestCase(unittest.TestCase):
     logging.basicConfig(level=logging.DEBUG)
+    logging.getLogger("pika").setLevel(logging.INFO)
+    logging.getLogger("flickr_harvester").setLevel(logging.DEBUG)
