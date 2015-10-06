@@ -4,7 +4,7 @@ import httplib as http_client
 from flickr_harvester import FLICKR_HOST
 from harvester.httplib_helper import wrap_api_call, parse_url
 import unittest
-
+import urlparse
 
 @unittest.skipIf(tests.integration_env_available, "Skipping test since integration env is available.")
 class HttpLibHelperTest(tests.TestCase):
@@ -26,9 +26,13 @@ class HttpLibHelperTest(tests.TestCase):
         self.assertTrue(raw_resp.startswith("""{"photo":{"id":"16796603565","secret":"90f7d5c74c","""))
 
         #Url
-        self.assertEqual("https://api.flickr.com/services/rest/?nojsoncallback=1&secret=90f7d5c74c&photo_id="
-                         "16796603565&method=flickr.photos.getInfo&format=json",
-                         response_record.header["WARC-Target-URI"])
+        self.assertTrue(response_record.header["WARC-Target-URI"].startswith("https://api.flickr.com/services/rest/?"))
+        split_url = urlparse.urlparse(response_record.header["WARC-Target-URI"])
+        self.assertDictEqual({"nojsoncallback": ["1"],
+                              "secret": ["90f7d5c74c"],
+                              "photo_id": ["16796603565"],
+                              "method": ["flickr.photos.getInfo"],
+                              "format": ["json"]}, urlparse.parse_qs(split_url.query))
 
     def test_parse_url(self):
         self.assertEqual("/services/rest/?user_id=131866249&method=flickr.people.getPublicPhotos",
