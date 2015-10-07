@@ -448,7 +448,7 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
         #Now wait for result message.
         result_body = None
         counter = 0
-        while counter < 60:
+        while counter < 180:
             time.sleep(.5)
             method_frame, header_frame, result_body = self.channel.basic_get(self.result_queue)
             if result_body:
