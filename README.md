@@ -1,6 +1,11 @@
 # sfm-flickr-harvester
 A harvester for flickr content as part of Social Feed Manager
 
+## Installing
+    git clone https://github.com/gwu-libraries/sfm-flickr-harvester.git
+    cd sfm-flickr-harvester
+    pip install -r requirements.txt
+
 ## Running as a service
 Flickr harvester will act on harvest start messages received from a queue. To run as a service:
 
@@ -26,15 +31,16 @@ or in environment variables (`FLICKR_KEY` and `FLICKR_SECRET`).  An example `tes
     python -m unittest discover
 
 ### Integration tests (inside docker containers)
-1. Start up the containers.
+1. Install [Docker](https://docs.docker.com/installation/) and [Docker-Compose](https://docs.docker.com/compose/install/).
+2. Start up the containers.
 
         docker-compose -f docker/dev.docker-compose.yml up -d
 
-2. Run the tests.
+3. Run the tests.
 
         docker exec docker_sfmflickrharvester_1 python -m unittest discover
 
-3. Shutdown containers.
+4. Shutdown containers.
 
         docker-compose -f docker/dev.docker-compose.yml kill
         docker-compose -f docker/dev.docker-compose.yml rm -v --force
