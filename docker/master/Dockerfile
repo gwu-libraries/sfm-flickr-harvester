@@ -1,0 +1,17 @@
+FROM python:2.7
+MAINTAINER Justin Littman <justinlittman@gwu.edu>
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    zip
+#Upgrade pip
+RUN pip install --upgrade pip
+#TODO: Change after initial commit to master.
+RUN wget --no-check-certificate https://github.com/gwu-libraries/sfm-flickr-harvester/archive/sfm_t22-flickr_harvester.zip
+RUN unzip sfm_t22-flickr_harvester.zip
+RUN mv sfm-flickr-harvester-sfm_t22-flickr_harvester /opt/sfm-flickr-harvester
+WORKDIR /opt/sfm-flickr-harvester
+RUN pip install -r requirements.txt
+RUN pip install appdeps
+CMD appdeps.py --port-wait mq:5672 \
+    && python flickr_harvester.py service mq $MQ_ENV_RABBITMQ_DEFAULT_USER $MQ_ENV_RABBITMQ_DEFAULT_PASS
