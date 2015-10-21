@@ -6,10 +6,9 @@ RUN apt-get update && apt-get install -y \
     zip
 #Upgrade pip
 RUN pip install --upgrade pip
-#TODO: Change after initial commit to master.
-RUN wget --no-check-certificate https://github.com/gwu-libraries/sfm-flickr-harvester/archive/sfm_t22-flickr_harvester.zip
-RUN unzip sfm_t22-flickr_harvester.zip
-RUN mv sfm-flickr-harvester-sfm_t22-flickr_harvester /opt/sfm-flickr-harvester
+RUN wget --no-check-certificate https://github.com/gwu-libraries/sfm-flickr-harvester/archive/master.zip
+RUN unzip master.zip
+RUN mv sfm-flickr-harvester-master /opt/sfm-flickr-harvester
 WORKDIR /opt/sfm-flickr-harvester
 RUN pip install -r requirements.txt
 RUN pip install appdeps

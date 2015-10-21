@@ -3,9 +3,8 @@ MAINTAINER Justin Littman <justinlittman@gwu.edu>
 
 RUN pip install --upgrade pip
 #This pre-fetches the most recent requirements.txt.
-#TODO: Uncomment after commit which includes requirements.txt.
-#ADD https://github.com/gwu-libraries/sfm-flickr-harvester/raw/master/requirements.txt /tmp/sfm-setup/
-#RUN pip install -r /tmp/requirements.txt
+ADD https://github.com/gwu-libraries/sfm-flickr-harvester/raw/master/requirements.txt /tmp/sfm-setup/
+RUN pip install -r /tmp/requirements.txt
 RUN pip install appdeps
 WORKDIR /opt/sfm-flickr-harvester
 CMD pip install -r requirements.txt --upgrade \
