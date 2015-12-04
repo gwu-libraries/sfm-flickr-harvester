@@ -5,7 +5,7 @@ sudo: required
 services:
   - docker
 before_install:
-- docker-compose -f docker/dev.docker-compose.yml up -d
+- docker-compose -f docker/ci.docker-compose.yml up -d
 - docker exec docker_sfmflickrharvester_1 python -m unittest discover
 script: python -m unittest discover
 notifications:
