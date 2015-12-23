@@ -13,4 +13,4 @@ WORKDIR /opt/sfm-flickr-harvester
 RUN pip install -r requirements.txt
 RUN pip install appdeps
 CMD appdeps.py --port-wait mq:5672 \
-    && python flickr_harvester.py service mq $MQ_ENV_RABBITMQ_DEFAULT_USER $MQ_ENV_RABBITMQ_DEFAULT_PASS
+    && python flickr_harvester.py --debug service mq $MQ_ENV_RABBITMQ_DEFAULT_USER $MQ_ENV_RABBITMQ_DEFAULT_PASS

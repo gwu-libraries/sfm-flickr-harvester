@@ -1,0 +1,122 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: ['OAuth oauth_nonce="68097231380582235851450882022", oauth_timestamp="1450882022",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="abddfe6fb8bba36e8ef0278ec65dbbc8",
+          oauth_signature="Tam2KT9byLeztR17ED%2Br%2FN4nfcg%3D"']
+      Connection: [close]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api.flickr.com/services/rest/?user_id=131866249%40N02&nojsoncallback=1&method=flickr.people.getInfo&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5WRXUvDMBSG/8o417Vtsrnagui1iL+gULI2XePyRXLqkNH/brKpm6MiQm5y3ud9
+        OR8HsNx5o6E6gOigArIkd+s1XZWPLzmFBLSfLQtvnYEqT6BlutmM783XX7RGe+7euAu2HE6Fnjl1
+        VC3DoWFSMA+VHqVMYGC+8cjQf+JjMGumeOyoCVbkGoP0OnoUOpUCUTENUwKOMzkDPh3BxfMZlKZl
+        KE4zXoBR6rhvnbC/qHYwaPzo5JU2IFpf1Vmd7ff7tJei3bm0NarOTo46+7GuOjuGOdMLyf+Vxo2V
+        fDZNmc0fYWqmMQw7U+lW8wfR3cfU1W2Zk/OoMawXzmPHkCPb8eut0Dwvb8KjxYIUFaUVodH97bnC
+        yYquSUmKYhmp1oyxekkQOk1BifcPuNnB9AE4ovEwkQIAAA==
+    headers:
+      age: ['2']
+      cache-control: [private]
+      connection: [close]
+      content-encoding: [gzip]
+      content-length: ['319']
+      content-type: [application/json]
+      date: ['Wed, 23 Dec 2015 14:47:03 GMT']
+      p3p: ['policyref="https://policies.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR
+          ADM DEV TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi
+          IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"']
+      server: [ATS]
+      vary: [Accept-Encoding]
+      via: ['http/1.1 fts110.flickr.bf1.yahoo.com (ApacheTrafficServer [cMsSf ]),
+          http/1.1 r17.ycpi.dcb.yahoo.net (ApacheTrafficServer [cMsSf ])']
+      x-served-by: [www308.flickr.bf1.yahoo.com]
+      y-trace: [BAEAQAAAAAAz7TsarNVixAAAAAAAAAAARLWR.pbKfQ8AAAAAAAAAAAAFJ5HLj3vUAAUnkcuYmN6yn5M4AAAAAA--]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: ['OAuth oauth_nonce="72014096828093970521450882023", oauth_timestamp="1450882023",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="abddfe6fb8bba36e8ef0278ec65dbbc8",
+          oauth_signature="0Cq2KgYUJ0wT1Ch5RO8UgoPE%2F1I%3D"']
+      Connection: [close]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api.flickr.com/services/rest/?nojsoncallback=1&user_id=131866249%40N02&format=json&page=1&per_page=6&method=flickr.people.getPublicPhotos
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52ST0/DMAzFv0vOPTh/asc9IYGEOMCFI0JTl6QQ0a1TW0Bo2ncn7aSJok2U3uyX
+        xP7pvezF7rXpm04Ue7ErX4IoZDYWSVGpCu1RxUz0TV/WohBSiez4ShRPexH9oCFKMNaA4XTYfG5D
+        O6haWkRl+OoBhkddcG3o00EIFjwH592oth/jdUu5TH1VthtRcFoY+zqtFnf3tyvKeZgcu937uo5u
+        xIxd1cawTfthbMpNrL9Sc8hOVERAubYG51Ch9qRDhY5+UhEadaKyv6k0LKA6eiVpnldr6xmdrqqJ
+        Vzlf9EppxiVecW5YmTGDP6kqNgw2xYjTBHV+kUrCEipJiAyEeg6VRx+UBlj7aYJgzyV483gNymq9
+        mIphFpUDTcy+dDzxChWd8ypRreA/v/35kKb25bCpeROHb+vyDTbSAwAA
+    headers:
+      age: ['0']
+      cache-control: [private]
+      connection: [close]
+      content-encoding: [gzip]
+      content-length: ['327']
+      content-type: [application/json]
+      date: ['Wed, 23 Dec 2015 14:47:03 GMT']
+      p3p: ['policyref="https://policies.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR
+          ADM DEV TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi
+          IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"']
+      server: [ATS]
+      vary: [Accept-Encoding]
+      via: ['http/1.1 fts120.flickr.bf1.yahoo.com (ApacheTrafficServer [cMsSf ]),
+          http/1.1 r15.ycpi.dcb.yahoo.net (ApacheTrafficServer [cMsSf ])']
+      x-served-by: [www67.flickr.bf1.yahoo.com]
+      y-trace: [BAEAQAAAAAC6EATs4VzclQAAAAAAAAAAPWkbEG7.c.8AAAAAAAAAAAAFJ5HLmaMnAAUnkcubQk.8VmzuAAAAAA--]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: ['OAuth oauth_nonce="91323911350412047901450882023", oauth_timestamp="1450882023",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="abddfe6fb8bba36e8ef0278ec65dbbc8",
+          oauth_signature="jElFXWvDbT4V1vAGIyY%2FajNEpeI%3D"']
+      Connection: [close]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api.flickr.com/services/rest/?nojsoncallback=1&user_id=131866249%40N02&format=json&page=2&per_page=6&method=flickr.people.getPublicPhotos
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52ST0vEQAzFv0vOPWT+ZTI9CXr24lFEZttUi91taasiy353p10Qu1AoveW9zMz7
+        kcwZuvd2bAfIz9DFN4FcZ3MxXCvpry5lMLZjbCAHpSG73oL8+Qx1OXlEGLTTNmBqtt8n6SfXKCZK
+        5t0jTpcGKXoZU6Nk661UZYiz23/Nx5k8JV3F/gh5SIH12KRoeHi6f0XHPvXqofs8NHUBuZpE1ddy
+        Svk4i3ism58kLtkNFfEmqqIiUWxRwn8qT07/UfEtlcMdVD44GzSj2kYVCQVL5RdUmt06ldV7ZqXQ
+        smUMW6iqgy2swej0coNBr27QOto1q7RE48htoQpY+dIV3hZLKs2rVMapff8KDQXDW6hISi/aGCUL
+        Kq9wlUp5s5nq5ZJeHeOU1H7A5Rfh6siu0gMAAA==
+    headers:
+      age: ['0']
+      cache-control: [private]
+      connection: [close]
+      content-encoding: [gzip]
+      content-length: ['313']
+      content-type: [application/json]
+      date: ['Wed, 23 Dec 2015 14:47:03 GMT']
+      p3p: ['policyref="https://policies.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR
+          ADM DEV TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi
+          IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"']
+      server: [ATS]
+      vary: [Accept-Encoding]
+      via: ['http/1.1 fts116.flickr.bf1.yahoo.com (ApacheTrafficServer [cMsSf ]),
+          http/1.1 r07.ycpi.dcb.yahoo.net (ApacheTrafficServer [cMsSf ])']
+      x-served-by: [www-bm023.flickr.bf1.yahoo.com]
+      y-trace: [BAEAQAAAAADryAqX3Du3rwAAAAAAAAAAubR_cdEgH.wAAAAAAAAAAAAFJ5HLnDG8AAUnkcufF4AYS94NAAAAAA--]
+    status: {code: 200, message: OK}
+version: 1
