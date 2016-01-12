@@ -16,4 +16,4 @@ CMD cd /opt/sfm-utils \
     && cd /opt/sfm-flickr-harvester \
     && pip install -r requirements.txt --upgrade \
     && appdeps.py --port-wait mq:5672 \
-    && python flickr_harvester.py --debug service mq $MQ_ENV_RABBITMQ_DEFAULT_USER $MQ_ENV_RABBITMQ_DEFAULT_PASS
+    && python flickr_harvester.py --debug=$DEBUG service mq $MQ_ENV_RABBITMQ_DEFAULT_USER $MQ_ENV_RABBITMQ_DEFAULT_PASS
