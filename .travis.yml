@@ -7,6 +7,7 @@ services:
 before_install:
 - docker-compose -f docker/ci.docker-compose.yml up -d
 - docker exec docker_sfmflickrharvester_1 python -m unittest discover
+install: pip install -r requirements.txt
 script: python -m unittest discover
 notifications:
   email:

@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: ['OAuth oauth_nonce="113463939359942158981450882250", oauth_timestamp="1450882250",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="abddfe6fb8bba36e8ef0278ec65dbbc8",
+          oauth_signature="5tdJs%2FbIWfcH%2FCRX0%2FfY1gFvXgI%3D"']
+      Connection: [close]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api.flickr.com/services/rest/?user_id=x131866249%40N02&nojsoncallback=1&method=flickr.people.getInfo&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKi5JLFGyUkpLzMxR0lFKzk9JVbIy1FHKTS0uTkwHspVCi1OLFPLySxTS8kvz
+        UpRqAewlIZczAAAA
+    headers:
+      age: ['0']
+      cache-control: [private]
+      connection: [close]
+      content-encoding: [gzip]
+      content-length: ['69']
+      content-type: [application/json]
+      date: ['Wed, 23 Dec 2015 14:50:51 GMT']
+      p3p: ['policyref="https://policies.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR
+          ADM DEV TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi
+          IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"']
+      server: [ATS]
+      vary: [Accept-Encoding]
+      via: ['http/1.1 fts114.flickr.bf1.yahoo.com (ApacheTrafficServer [cMsSf ]),
+          http/1.1 r03.ycpi.nyc.yahoo.net (ApacheTrafficServer [cMsSf ])']
+      x-served-by: [www338.flickr.bf1.yahoo.com]
+      y-trace: [BAEAQAAAAACFvOsuDYjuFQAAAAAAAAAAcWZrwd93ZeAAAAAAAAAAAAAFJ5HZL7ZUAAUnkdkxJDZtZNZMAAAAAA--]
+    status: {code: 200, message: OK}
+version: 1

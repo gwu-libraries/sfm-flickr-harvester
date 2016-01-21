@@ -1,0 +1,89 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: ['OAuth oauth_nonce="121533708959213403111450882683", oauth_timestamp="1450882683",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="abddfe6fb8bba36e8ef0278ec65dbbc8",
+          oauth_signature="JKXWDwRJWrc1AfAiYgD0%2FVDHUTE%3D"']
+      Connection: [close]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api.flickr.com/services/rest/?photo_id=16609036938&secret=6ed7e2331e&nojsoncallback=1&method=flickr.photos.getInfo&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA31TTY/aMBD9KyufWbCTJUBOldpTVfXSY6nQbDKAF8e2bAe0Qvz3zjgJ292Veoo9
+        88bvw/FV+KNLTtRXoVtRC1VVciPLalOuxUxEbAImKlfYrrAoS4W5Gs4YqLpeKUn7PYRO1JuZaCFh
+        742DFvNZT0WlNmq1Kgmk4x7OLuiEopYzYXSDNtJa8AkR9phedwbPaMZScAmSdjajae6gLZi7nuap
+        rJbroqxYz9Tdu9ABd1/8gcsXyyqvwsbBWqnWVVU8bb78lAX1e/JhoWMNL31M2s6NTqkDy+wIZux9
+        z72HH/eecc2oTLCvxtl7IHIsDImQcA/puAOjIYra9sbcZiLpZJBl7QiY0LLgb7++7qSinKjfYmyC
+        9gPDOxR3zzrqZ01CX/OVRd8/U5SiVjnhoNG2mZjj7rQhlLwNFxN5wLuYPt9NghOynUKq8lGWj0X1
+        IJf1UtZSTd1DANIPIRNnn7nc25OlnMeSgZh6z2QjQ7FUlVoPuvESRxi2OsGbiQZs47oueyTltIW2
+        7TDBoH1w+J8Z9Xmmj3DAEdeSPv4lJ+CzcYeJyAf9xhqPEGhI0fx4dvxwAZKdWDdmyQtR//7DGtH5
+        4VKPEKcNC0lwyFj6jtA+mFyhL1Wo8+o5rfwKPaue/ct4TMnHervYLi6Xy3xPQZzCnNRtF3kgbhfv
+        /mravr3f7ULcmLGj7GCiYAcx5VfiTuL2F8GIxv7/AwAA
+    headers:
+      age: ['0']
+      cache-control: [private]
+      connection: [close]
+      content-encoding: [gzip]
+      content-length: ['546']
+      content-type: [application/json]
+      date: ['Wed, 23 Dec 2015 14:58:04 GMT']
+      p3p: ['policyref="https://policies.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR
+          ADM DEV TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi
+          IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"']
+      server: [ATS]
+      vary: [Accept-Encoding]
+      via: ['http/1.1 fts106.flickr.bf1.yahoo.com (ApacheTrafficServer [cMsSf ]),
+          http/1.1 r17.ycpi.dcb.yahoo.net (ApacheTrafficServer [cMsSf ])']
+      x-served-by: [www319.flickr.bf1.yahoo.com]
+      y-trace: [BAEAQAAAAADzWjtxfofKEgAAAAAAAAAARLWR.pbKfQ8AAAAAAAAAAAAFJ5HzBXUgAAUnkfMHmYrlK5zuAAAAAA--]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: ['OAuth oauth_nonce="62085056465568400811450882684", oauth_timestamp="1450882684",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="abddfe6fb8bba36e8ef0278ec65dbbc8",
+          oauth_signature="pyu0a6jzsUxC6I4RsrwrblUV2ds%3D"']
+      Connection: [close]
+      Content-Length: ['0']
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://api.flickr.com/services/rest/?photo_id=16609036938&nojsoncallback=1&method=flickr.photos.getSizes&format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA7XVy66bMBAA0F+JvEbBDzCGVT+gj8XtrlTIgANuDE7ACClR/r1uctPgq0pBirvC
+        A/LgoxmNz2CUJzGC7Awq3pdKNyCDwZ/1YZC9uQe1nnuleQ0yFFx3gOzHGSheCgUy8Hac+CBAAGZZ
+        mxZkSRyAVsimNbf1qKehsltAa8xhzPIwD3d86NLtaLiR1U7Jaj9sK93lIUsQzENEKUwhoSlhBRV1
+        IjAhSBTj9tehsb+ZBuUkm+d5u0xyaLXRo01DEKMUR+mnrxA7WfPwyraPYx7ajJ2oJbc5rzvBJXjY
+        PvOhEZuPQoBiCB7I99CX8+jf+Yz5vZ26sudSLY3QMVLqkWj8E80T4lvH1ZKHow8lTD36uv/Qqmt8
+        G4LhwniL7kaMsD9h71/YPxF+sV+mbsGL3Q615/JXQv+8bhVvQ6NlBanbpRGOPHbpyT/ytA7J4BLJ
+        nDrGBPojVv6J1Zorw5mj16I9BmnCPNaw9A9Uq+5ERJ0avod3JYL01SoKVtY1FzThResf2a5CYhix
+        5Z1xC/8iSUxfRGIoeLrDKUTF3j9y/wT5bZCN7PnyWoxSzJyhiunLI6eKCI0ZJlQU2j9S/wv582LP
+        bI9m3+g9uPwGDqbl2OgKAAA=
+    headers:
+      age: ['0']
+      cache-control: [private]
+      connection: [close]
+      content-encoding: [gzip]
+      content-length: ['473']
+      content-type: [application/json]
+      date: ['Wed, 23 Dec 2015 14:58:04 GMT']
+      p3p: ['policyref="https://policies.yahoo.com/w3c/p3p.xml", CP="CAO DSP COR CUR
+          ADM DEV TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi
+          IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC GOV"']
+      server: [ATS]
+      vary: [Accept-Encoding]
+      via: ['http/1.1 fts129.flickr.bf1.yahoo.com (ApacheTrafficServer [cMsSf ]),
+          http/1.1 r05.ycpi.dcb.yahoo.net (ApacheTrafficServer [cMsSf ])']
+      x-served-by: [www289.flickr.bf1.yahoo.com]
+      y-trace: [BAEAQAAAAADynFsIb8NqDgAAAAAAAAAArg8U6HtU68AAAAAAAAAAAAAFJ5HzCJbgAAUnkfMLxVJC.jgNAAAAAA--]
+    status: {code: 200, message: OK}
+version: 1

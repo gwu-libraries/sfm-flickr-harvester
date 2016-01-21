@@ -9,3 +9,4 @@ sfmflickrharvester:
         - sfmrabbit:mq
     volumes:
         - "..:/opt/sfm-flickr-harvester"
+    command: bash -c "pip install -r requirements.txt --upgrade && appdeps.py --port-wait mq:5672 && python flickr_harvester.py service mq $MQ_ENV_RABBITMQ_DEFAULT_USER $MQ_ENV_RABBITMQ_DEFAULT_PASS --debug"

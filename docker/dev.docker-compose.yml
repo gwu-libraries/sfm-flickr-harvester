@@ -12,4 +12,7 @@ sfmflickrharvester:
         - sfmrabbit:mq
     volumes:
         - "..:/opt/sfm-flickr-harvester"
-    restart: always
+        - "../../sfm-utils:/opt/sfm-utils"
+#    restart: always
+    environment:
+        - DEBUG=True

@@ -11,3 +11,5 @@ sfmflickrharvester:
     links:
         - sfmrabbit:mq
     restart: always
+    environment:
+        - DEBUG=True
