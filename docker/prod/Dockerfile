@@ -3,11 +3,11 @@ MAINTAINER Justin Littman <justinlittman@gwu.edu>
 
 ENV sfm_harvester_version 0.2.0
 RUN apt-get update && apt-get install -y \
-    wget \
-    zip
+    zip=3.0-8
 #Upgrade pip
-RUN pip install --upgrade pip
-RUN wget --no-check-certificate https://github.com/gwu-libraries/sfm-flickr-harvester/archive/${sfm_harvester_version}.zip
+RUN pip install pip==7.1.2
+WORKDIR /tmp
+ADD https://github.com/gwu-libraries/sfm-flickr-harvester/archive/${sfm_harvester_version}.zip /tmp/
 RUN unzip ${sfm_harvester_version}.zip
 RUN mv sfm-flickr-harvester-${sfm_harvester_version} /opt/sfm-flickr-harvester
 WORKDIR /opt/sfm-flickr-harvester
