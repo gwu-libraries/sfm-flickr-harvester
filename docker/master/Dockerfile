@@ -3,7 +3,7 @@ MAINTAINER Justin Littman <justinlittman@gwu.edu>
 
 RUN apt-get update && apt-get install -y \
     zip=3.0-8 \
-    git=1:1.9.1-1ubuntu0.2
+    git=1:2.1.4-2.1+deb8u1
 #Upgrade pip
 RUN pip install pip==7.1.2
 WORKDIR /tmp
