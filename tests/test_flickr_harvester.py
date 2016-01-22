@@ -31,8 +31,8 @@ class TestFlickrHarvester(tests.TestCase):
             "type": "flickr_user",
             "seeds": [],
             "credentials": {
-                "key": tests.FLICKR_KEY,
-                "secret": tests.FLICKR_SECRET
+                "key": tests.FLICKR_KEY or "fake key",
+                "secret": tests.FLICKR_SECRET or "fake secret"
             },
             "collection": {
                 "id": "test_collection",
