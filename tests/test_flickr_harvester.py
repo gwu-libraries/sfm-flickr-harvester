@@ -225,6 +225,8 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             self.web_harvest_queue(connection).purge()
             self.warc_created_queue(connection).declare()
             self.warc_created_queue(connection).purge()
+            # By declaring this, avoid race situation where harvester may not be up yet.
+            flickr_harvester_queue(connection).declare()
             flickr_harvester_queue(connection).purge()
 
         self.collection_path = tempfile.mkdtemp()
@@ -232,7 +234,7 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
     def tearDown(self):
         shutil.rmtree(self.collection_path, ignore_errors=True)
 
-    def test_search(self):
+    def test_user(self):
         harvest_msg = {
             "id": "test:1",
             "type": "flickr_user",
