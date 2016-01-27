@@ -6,7 +6,13 @@ A harvester for flickr content as part of Social Feed Manager
 ## Installing
     git clone https://github.com/gwu-libraries/sfm-flickr-harvester.git
     cd sfm-flickr-harvester
-    pip install -r requirements.txt
+    pip install -r requirements/requirements.txt
+
+Note that `requirements/requirements.txt` references the latest releast of warcprox-gwu and sfm-utils.
+If you are doing development on the interaction between warcprox-gwu, sfm-utils, and sfm-twitter-harvester,
+use `requirements/dev.txt`. This uses a local copy of warcprox-gwu (`../warcprox`) and sfm-utils (`../sfm-utils`)
+in editable mode.
+
 
 ## Running as a service
 Flickr harvester will act on harvest start messages received from a queue. To run as a service:

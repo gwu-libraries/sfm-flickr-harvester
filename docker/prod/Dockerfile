@@ -12,7 +12,7 @@ ADD https://github.com/gwu-libraries/sfm-flickr-harvester/archive/${sfm_harveste
 RUN unzip ${sfm_harvester_version}.zip
 RUN mv sfm-flickr-harvester-${sfm_harvester_version} /opt/sfm-flickr-harvester
 WORKDIR /opt/sfm-flickr-harvester
-RUN pip install -r requirements.txt
+RUN pip install -r requirements/requirements.txt
 RUN pip install appdeps
 CMD appdeps.py --port-wait mq:5672 \
     && python flickr_harvester.py --debug=$DEBUG service mq $MQ_ENV_RABBITMQ_DEFAULT_USER $MQ_ENV_RABBITMQ_DEFAULT_PASS
