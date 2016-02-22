@@ -5,6 +5,7 @@ sfmrabbit:
         - "15672:15672"
     restart: always
     environment:
+        - TZ=EST
         - RABBITMQ_DEFAULT_USER=sfm_user
         - RABBITMQ_DEFAULT_PASS=password
 sfmflickrharvester:
@@ -17,4 +18,5 @@ sfmflickrharvester:
         - "../../warcprox:/opt/warcprox"
 #    restart: always
     environment:
+        - TZ=EST
         - DEBUG=True
