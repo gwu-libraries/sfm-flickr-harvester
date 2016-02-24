@@ -12,6 +12,7 @@ import shutil
 import tempfile
 from datetime import datetime
 
+
 vcr = base_vcr.VCR(
         cassette_library_dir='tests/fixtures',
         record_mode='once',
