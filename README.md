@@ -14,7 +14,7 @@ use `requirements/dev.txt`. This uses a local copy of warcprox-gwu (`../warcprox
 in editable mode.
 
 
-## Running as a service
+## Running harvester as a service
 Flickr harvester will act on harvest start messages received from a queue. To run as a service:
 
     python flickr_harvester.py service <mq host> <mq username> <mq password>
@@ -23,6 +23,21 @@ Flickr harvester will act on harvest start messages received from a queue. To ru
 Flickr harvester can process harvest start files. The format of a harvest start file is the same as a harvest start message.  To run:
 
     python flickr_harvester.py seed <path to file>
+
+## Iterating over photo records in a WARC
+
+    python flickr_photo_warc_iter.py <path to WARC>
+
+## Running exporter as a service
+Flickr exporter will act on export start messages received from a queue. To run as a service:
+
+    python flickr_exporter.py service <mq host> <mq username> <mq password> <SFM UI REST API url>
+    
+## Process export start files
+Flickr exporter can process export start files. The format of an export start file is the same as an export start message.  To run:
+
+    python flickr_exporter.py file <path to file> <SFM UI REST API url>
+
 
 ## Tests
 For all tests:
