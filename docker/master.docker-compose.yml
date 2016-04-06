@@ -16,3 +16,11 @@ sfmflickrharvester:
     environment:
         - TZ=EST
         - DEBUG=True
+sfmflickrexporter:
+    image: gwul/sfm-flickr-exporter:master
+    links:
+        - sfmrabbit:mq
+    restart: always
+    environment:
+        - TZ=EST
+        - DEBUG=True

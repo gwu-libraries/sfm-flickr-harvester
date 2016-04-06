@@ -20,3 +20,14 @@ sfmflickrharvester:
     environment:
         - TZ=EST
         - DEBUG=True
+sfmflickrexporter:
+    image: gwul/sfm-flickr-exporter:dev
+    links:
+        - sfmrabbit:mq
+    volumes:
+        - "..:/opt/sfm-flickr-harvester"
+        - "../../sfm-utils:/opt/sfm-utils"
+#    restart: always
+    environment:
+        - TZ=EST
+        - DEBUG=True
