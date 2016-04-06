@@ -62,7 +62,6 @@ class FlickrHarvester(BaseHarvester):
 
         # Get info on the user
         resp = self.api.people.getInfo(user_id=nsid, format="parsed-json")
-        print json.dumps(resp, indent=4)
         if resp["stat"] != "ok":
             if resp["code"] == 1:
                 msg = "NSID {} not found".format(nsid)
