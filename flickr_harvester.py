@@ -41,19 +41,19 @@ class FlickrHarvester(BaseHarvester):
         sizes = options.get("sizes", ("Thumbnail", "Large", "Original"))
 
         for seed in self.message.get("seeds", []):
-            self._user(seed.get("token"), seed.get("uid"), incremental, sizes)
+            self._user(seed.get("id"), seed.get("token"), seed.get("uid"), incremental, sizes)
             if not self.harvest_result.success:
                 break
 
-    def _user(self, username, nsid, incremental, sizes):
-        log.info("Harvesting user %s. Incremental is %s. Sizes is %s", nsid or username, incremental, sizes)
+    def _user(self, seed_id, username, nsid, incremental, sizes):
+        log.info("Harvesting user %s with seed_id %s. Incremental is %s. Sizes is %s", username, seed_id, incremental, sizes)
         assert username or nsid
         # Lookup nsid
         if username and not nsid:
             nsid = self._lookup_nsid(username)
             if nsid:
                 # Report back if nsid found
-                self.harvest_result.uids[username] = nsid
+                self.harvest_result.uids[seed_id] = nsid
             else:
                 msg = "NSID not found for user {}".format(username)
                 log.exception(msg)
@@ -80,7 +80,7 @@ class FlickrHarvester(BaseHarvester):
         # Extract username
         new_username = resp["person"]["username"]["_content"]
         if new_username != username:
-            self.harvest_result.token_updates[nsid] = new_username
+            self.harvest_result.token_updates[seed_id] = new_username
 
         page = 0
         # This is a dummy value. Will get actual value when call getPublicPhotos()
