@@ -30,6 +30,9 @@ class FlickrPhotoTable(BaseTable):
                 item["originalformat"], item["owner"]["nsid"], item["owner"]["username"], item["title"]["_content"],
                 item["description"]["_content"], item["media"], photopage_url)
 
+    def id_field(self):
+        return "photo_id"
+
 
 class FlickrExporter(BaseExporter):
     def __init__(self, api_base_url, mq_config=None, warc_base_path=None):

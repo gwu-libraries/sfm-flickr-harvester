@@ -1,14 +1,9 @@
 import tests
 import vcr as base_vcr
 from flickr_exporter import FlickrExporter, FlickrPhotoTable
-from sfmutils.exporter import CODE_WARC_MISSING, CODE_BAD_REQUEST
 import os
 import tempfile
 import shutil
-import json
-from flickr_photo_warc_iter import FlickrPhotoWarcIter
-from mock import MagicMock, patch
-import iso8601
 
 vcr = base_vcr.VCR(
         cassette_library_dir='tests/fixtures',
