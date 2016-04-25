@@ -1,5 +1,5 @@
 # sfm-flickr-harvester
-A harvester for flickr content as part of Social Feed Manager
+A harvester for flickr content as part of [Social Feed Manager](https://gwu-libraries.github.io/sfm-ui).
 
 [![Build Status](https://travis-ci.org/gwu-libraries/sfm-flickr-harvester.svg?branch=master)](https://travis-ci.org/gwu-libraries/sfm-flickr-harvester)
 
