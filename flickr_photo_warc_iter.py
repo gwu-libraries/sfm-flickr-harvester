@@ -3,7 +3,7 @@
 from __future__ import absolute_import
 from sfmutils.warc_iter import BaseWarcIter
 from datetime import datetime
-
+import pytz
 
 class FlickrPhotoWarcIter(BaseWarcIter):
     def __init__(self, filepaths, limit_owner_nsids=None):
@@ -15,8 +15,8 @@ class FlickrPhotoWarcIter(BaseWarcIter):
 
     def _item_iter(self, url, json_obj):
         if json_obj["stat"] == "ok":
-            yield "flickr_photo", json_obj["photo"]["id"], datetime.utcfromtimestamp(
-                int(json_obj["photo"]["dates"]["posted"])), json_obj["photo"]
+            yield "flickr_photo", json_obj["photo"]["id"], datetime.fromtimestamp(
+                int(json_obj["photo"]["dates"]["posted"]), tz=pytz.utc), json_obj["photo"]
         else:
             yield "flickr_photo", None, None, None
 

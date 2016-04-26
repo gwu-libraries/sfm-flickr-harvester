@@ -23,6 +23,7 @@ petl==1.1.0
 pyasn1==0.1.9
 pycparser==2.14
 pyOpenSSL==0.15.1
+pytz==2016.4
 PyYAML==3.11
 requests==2.9.1
 requests-oauthlib==0.6.0

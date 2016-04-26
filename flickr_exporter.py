@@ -36,7 +36,8 @@ class FlickrPhotoTable(BaseTable):
 
 class FlickrExporter(BaseExporter):
     def __init__(self, api_base_url, mq_config=None, warc_base_path=None):
-        BaseExporter.__init__(self, api_base_url, FlickrPhotoWarcIter, FlickrPhotoTable, mq_config=mq_config, warc_base_path=warc_base_path)
+        BaseExporter.__init__(self, api_base_url, FlickrPhotoWarcIter, FlickrPhotoTable, mq_config=mq_config,
+                              warc_base_path=warc_base_path)
 
 
 if __name__ == "__main__":
