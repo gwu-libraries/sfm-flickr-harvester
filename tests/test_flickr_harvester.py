@@ -30,14 +30,14 @@ class TestFlickrHarvester(tests.TestCase):
         self.harvester.message = {
             "id": "test:1",
             "type": "flickr_user",
+            "path": "/collections/test_collection/seedset_id",
             "seeds": [],
             "credentials": {
                 "key": tests.FLICKR_KEY or "fake key",
                 "secret": tests.FLICKR_SECRET or "fake secret"
             },
             "collection": {
-                "id": "test_collection",
-                "path": "/collections/test_collection"
+                "id": "test_collection"
             },
             "options": {}
         }
@@ -45,7 +45,8 @@ class TestFlickrHarvester(tests.TestCase):
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
     def test_harvest_nsid(self, mock_photo_method):
-        self.harvester.message["seeds"].append({"uid": "131866249@N02"})
+        self.harvester.message["seeds"].append({"uid": "131866249@N02",
+                                                "id":"1"})
         self.harvester.harvest_seeds()
 
         # Calls to _photo have been mocked out. Check mock.
@@ -57,7 +58,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.assertTrue(self.harvester.harvest_result.success)
         self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
-        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["131866249@N02"])
+        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["1"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
 
         # Check state store
@@ -67,7 +68,8 @@ class TestFlickrHarvester(tests.TestCase):
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
     def test_harvest_username(self, mock_photo_method):
-        self.harvester.message["seeds"].append({"token": "justin.littman"})
+        self.harvester.message["seeds"].append({"token": "justin.littman",
+                                                "id": "2"})
         self.harvester.harvest_seeds()
 
         # Calls to _photo have been mocked out. Check mock.
@@ -80,7 +82,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(0, len(self.harvester.harvest_result.token_updates))
         self.assertEqual(1, len(self.harvester.harvest_result.uids))
-        self.assertEqual("131866249@N02", self.harvester.harvest_result.uids["justin.littman"])
+        self.assertEqual("131866249@N02", self.harvester.harvest_result.uids["2"])
 
         # Check state store
         self.assertEqual("16609036938",
@@ -89,7 +91,9 @@ class TestFlickrHarvester(tests.TestCase):
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
     def test_harvest_update_username(self, mock_photo_method):
-        self.harvester.message["seeds"].append({"uid": "131866249@N02", "token": "not_justin_littman"})
+        self.harvester.message["seeds"].append({"uid": "131866249@N02",
+                                                "token": "not_justin_littman",
+                                                "id": "3"})
         self.harvester.harvest_seeds()
 
         # Calls to _photo have been mocked out. Check mock.
@@ -101,7 +105,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.assertTrue(self.harvester.harvest_result.success)
         self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
-        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["131866249@N02"])
+        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["3"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
 
         # Check state store
@@ -111,7 +115,8 @@ class TestFlickrHarvester(tests.TestCase):
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
     def test_harvest_unknown_username(self, mock_photo_method):
-        self.harvester.message["seeds"].append({"token": "not_justin_littman"})
+        self.harvester.message["seeds"].append({"token": "not_justin_littman",
+                                                "id": "4"})
         self.harvester.harvest_seeds()
 
         # Calls to _photo have been mocked out. Check mock.
@@ -129,7 +134,8 @@ class TestFlickrHarvester(tests.TestCase):
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
     def test_harvest_incremental_middle(self, mock_photo_method):
-        self.harvester.message["seeds"].append({"uid": "131866249@N02"})
+        self.harvester.message["seeds"].append({"uid": "131866249@N02",
+                                                "id": "5"})
         self.harvester.message["options"]["incremental"] = True
         # Set state
         self.harvester.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16609252490")
@@ -145,7 +151,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.assertTrue(self.harvester.harvest_result.success)
         self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
-        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["131866249@N02"])
+        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["5"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
 
         # Check state store
@@ -155,7 +161,8 @@ class TestFlickrHarvester(tests.TestCase):
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
     def test_harvest_incremental_end(self, mock_photo_method):
-        self.harvester.message["seeds"].append({"uid": "131866249@N02"})
+        self.harvester.message["seeds"].append({"uid": "131866249@N02",
+                                                "id": "6"})
         self.harvester.message["options"]["incremental"] = True
         # Set state
         self.harvester.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16609036938")
@@ -169,7 +176,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.assertTrue(self.harvester.harvest_result.success)
         self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
-        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["131866249@N02"])
+        self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["6"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
 
         # Check state store
@@ -179,7 +186,8 @@ class TestFlickrHarvester(tests.TestCase):
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
     def test_harvest_unknown_nsid(self, mock_photo_method):
-        self.harvester.message["seeds"].append({"uid": "x131866249@N02"})
+        self.harvester.message["seeds"].append({"uid": "x131866249@N02",
+                                                "id": "7"})
         self.harvester.harvest_seeds()
 
         # Calls to _photo have been mocked out. Check mock.
@@ -230,16 +238,18 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             flickr_harvester_queue(connection).declare()
             flickr_harvester_queue(connection).purge()
 
-        self.collection_path = tempfile.mkdtemp()
+        self.harvest_path = tempfile.mkdtemp()
 
     def tearDown(self):
-        shutil.rmtree(self.collection_path, ignore_errors=True)
+        shutil.rmtree(self.harvest_path, ignore_errors=True)
 
     def test_user(self):
         harvest_msg = {
             "id": "test:1",
             "type": "flickr_user",
+            "path": self.harvest_path,
             "seeds": [{
+                "id": "seed_id",
                 "uid": "131866249@N02"
             }],
             "credentials": {
@@ -247,8 +257,7 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
                 "secret": tests.FLICKR_SECRET
             },
             "collection": {
-                "id": "test_collection",
-                "path": self.collection_path
+                "id": "test_collection"
             }
         }
 
