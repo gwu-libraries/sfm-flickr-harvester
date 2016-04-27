@@ -5,6 +5,7 @@ from sfmutils.warc_iter import BaseWarcIter
 from datetime import datetime
 import pytz
 
+
 class FlickrPhotoWarcIter(BaseWarcIter):
     def __init__(self, filepaths, limit_owner_nsids=None):
         BaseWarcIter.__init__(self, filepaths)

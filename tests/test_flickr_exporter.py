@@ -49,7 +49,7 @@ class TestFlickrExporter(tests.TestCase):
         self.assertTrue(os.path.exists(csv_filepath))
         with open(csv_filepath, "r") as f:
             lines = f.readlines()
-        self.assertEqual(77, len(lines))
+        self.assertEqual(33, len(lines))
 
     @vcr.use_cassette()
     def test_export_seeds(self):
@@ -77,7 +77,7 @@ class TestFlickrExporter(tests.TestCase):
         self.assertTrue(os.path.exists(csv_filepath))
         with open(csv_filepath, "r") as f:
             lines = f.readlines()
-        self.assertEqual(112, len(lines))
+        self.assertEqual(50, len(lines))
 
 
 class TestFlickrPhotoTable(tests.TestCase):

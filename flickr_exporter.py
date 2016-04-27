@@ -25,10 +25,10 @@ class FlickrPhotoTable(BaseTable):
         for url in item["urls"]["url"]:
             if url["type"] == "photopage":
                 photopage_url = url["_content"]
-
         return (item["id"], item["dates"]["posted"], item["dates"]["taken"], item["license"], item["safety_level"],
-                item["originalformat"], item["owner"]["nsid"], item["owner"]["username"], item["title"]["_content"],
-                item["description"]["_content"], item["media"], photopage_url)
+                item["originalformat"], item["owner"]["nsid"], item["owner"]["username"],
+                item["title"]["_content"].replace('\n', ' '),
+                item["description"]["_content"].replace('\n', ' '), item["media"], photopage_url)
 
     def id_field(self):
         return "photo_id"
