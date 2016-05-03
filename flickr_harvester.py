@@ -2,7 +2,6 @@ from __future__ import absolute_import
 import logging
 import flickrapi
 from sfmutils.harvester import BaseHarvester, Msg, CODE_TOKEN_NOT_FOUND, CODE_UID_NOT_FOUND, CODE_UNKNOWN_ERROR
-import json
 
 log = logging.getLogger(__name__)
 
@@ -11,8 +10,8 @@ ROUTING_KEY = "harvest.start.flickr.*"
 
 
 class FlickrHarvester(BaseHarvester):
-    def __init__(self, process_interval_secs=1200, mq_config=None, debug=False, per_page=None):
-        BaseHarvester.__init__(self, mq_config=mq_config, process_interval_secs=process_interval_secs, debug=debug)
+    def __init__(self, mq_config=None, debug=False, per_page=None):
+        BaseHarvester.__init__(self, mq_config=mq_config, debug=debug)
         self.api = None
         # For testing purposes
         self.per_page = per_page
@@ -46,7 +45,8 @@ class FlickrHarvester(BaseHarvester):
                 break
 
     def _user(self, seed_id, username, nsid, incremental, sizes):
-        log.info("Harvesting user %s with seed_id %s. Incremental is %s. Sizes is %s", username, seed_id, incremental, sizes)
+        log.info("Harvesting user %s with seed_id %s. Incremental is %s. Sizes is %s", username, seed_id, incremental,
+                 sizes)
         assert username or nsid
         # Lookup nsid
         if username and not nsid:
