@@ -74,9 +74,6 @@ class FlickrHarvester(BaseHarvester):
                 self.harvest_result.success = False
             return
 
-        # Update summary
-        self.harvest_result.increment_summary("user")
-
         # Extract username
         new_username = resp["person"]["username"]["_content"]
         if new_username != username:
@@ -144,7 +141,7 @@ class FlickrHarvester(BaseHarvester):
                 log.debug("Skipping url for %s", size["label"])
 
         # Increment summary
-        self.harvest_result.increment_summary("photo")
+        self.harvest_result.increment_summary("Flickr photo")
 
     def _lookup_nsid(self, username):
         """

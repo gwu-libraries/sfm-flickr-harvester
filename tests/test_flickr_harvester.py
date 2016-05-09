@@ -56,7 +56,6 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
         self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["1"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
@@ -79,7 +78,6 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(0, len(self.harvester.harvest_result.token_updates))
         self.assertEqual(1, len(self.harvester.harvest_result.uids))
         self.assertEqual("131866249@N02", self.harvester.harvest_result.uids["2"])
@@ -103,7 +101,6 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
         self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["3"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
@@ -149,7 +146,6 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
         self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["5"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
@@ -174,7 +170,6 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(1, self.harvester.harvest_result.summary["user"])
         self.assertEqual(1, len(self.harvester.harvest_result.token_updates))
         self.assertEqual("justin.littman", self.harvester.harvest_result.token_updates["6"])
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
@@ -208,7 +203,7 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(1, self.harvester.harvest_result.summary["photo"])
+        self.assertEqual(1, self.harvester.harvest_result.summary["Flickr photo"])
         self.assertEqual(["https://farm9.staticflickr.com/8710/16609036938_6ed7e2331e_t.jpg",
                           "https://farm9.staticflickr.com/8710/16609036938_6ed7e2331e_b.jpg"],
                          self.harvester.harvest_result.urls)
@@ -280,10 +275,8 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             self.assertEqual("test:1", result_msg["id"])
             # Success
             self.assertEqual("completed success", result_msg["status"])
-            # A user
-            self.assertEqual(1, result_msg["summary"]["user"])
             # And some photos
-            self.assertTrue(result_msg["summary"]["photo"])
+            self.assertTrue(result_msg["summary"]["Flickr photo"])
 
             # Web harvest message.
             bound_web_harvest_queue = self.web_harvest_queue(connection)
