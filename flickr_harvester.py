@@ -141,7 +141,7 @@ class FlickrHarvester(BaseHarvester):
                 log.debug("Skipping url for %s", size["label"])
 
         # Increment summary
-        self.harvest_result.increment_summary("Flickr photo")
+        self.harvest_result.increment_stats("flickr photos")
 
     def _lookup_nsid(self, username):
         """

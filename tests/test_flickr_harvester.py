@@ -10,7 +10,7 @@ import time
 from kombu import Connection, Exchange, Queue, Producer
 import shutil
 import tempfile
-from datetime import datetime
+from datetime import datetime, date
 
 
 vcr = base_vcr.VCR(
@@ -121,12 +121,11 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(0, self.harvester.harvest_result.summary["user"])
+        self.assertFalse(self.harvester.harvest_result.stats_summary()["flickr photos"])
         self.assertEqual(0, len(self.harvester.harvest_result.token_updates))
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
         self.assertEqual(1, len(self.harvester.harvest_result.warnings))
         self.assertEqual(CODE_TOKEN_NOT_FOUND, self.harvester.harvest_result.warnings[0].code)
-        print self.harvester.harvest_result
 
     @vcr.use_cassette()
     @patch.object(FlickrHarvester, "_photo")
@@ -190,7 +189,7 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(0, self.harvester.harvest_result.summary["user"])
+        self.assertFalse(self.harvester.harvest_result.stats_summary()["flickr photos"])
         self.assertEqual(0, len(self.harvester.harvest_result.token_updates))
         self.assertEqual(0, len(self.harvester.harvest_result.uids))
         self.assertEqual(1, len(self.harvester.harvest_result.warnings))
@@ -203,7 +202,7 @@ class TestFlickrHarvester(tests.TestCase):
 
         # Check harvest result
         self.assertTrue(self.harvester.harvest_result.success)
-        self.assertEqual(1, self.harvester.harvest_result.summary["Flickr photo"])
+        self.assertEqual(1, self.harvester.harvest_result.stats_summary()["flickr photos"])
         self.assertEqual(["https://farm9.staticflickr.com/8710/16609036938_6ed7e2331e_t.jpg",
                           "https://farm9.staticflickr.com/8710/16609036938_6ed7e2331e_b.jpg"],
                          self.harvester.harvest_result.urls)
@@ -276,7 +275,7 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             # Success
             self.assertEqual("completed success", result_msg["status"])
             # And some photos
-            self.assertTrue(result_msg["summary"]["Flickr photo"])
+            self.assertTrue(result_msg["stats"][date.today().isoformat()]["flickr photos"])
 
             # Web harvest message.
             bound_web_harvest_queue = self.web_harvest_queue(connection)
