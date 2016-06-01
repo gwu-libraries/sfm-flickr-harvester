@@ -29,12 +29,12 @@ class TestFlickrExporter(tests.TestCase):
             shutil.rmtree(self.export_path)
 
     @vcr.use_cassette()
-    def test_export_seedset(self):
+    def test_export_collection(self):
 
         export_message = {
             "id": "test1",
             "type": "flickr_user",
-            "seedset": {
+            "collection": {
                 "id": "005b131f5f854402afa2b08a4b7ba960"
             },
             "format": "csv",
