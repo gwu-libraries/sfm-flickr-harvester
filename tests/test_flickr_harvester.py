@@ -30,14 +30,14 @@ class TestFlickrHarvester(tests.TestCase):
         self.harvester.message = {
             "id": "test:1",
             "type": "flickr_user",
-            "path": "/collections/test_collection/seedset_id",
+            "path": "/collections/test_collection_set/collection_id",
             "seeds": [],
             "credentials": {
                 "key": tests.FLICKR_KEY or "fake key",
                 "secret": tests.FLICKR_SECRET or "fake secret"
             },
-            "collection": {
-                "id": "test_collection"
+            "collection_set": {
+                "id": "test_collection_set"
             },
             "options": {}
         }
@@ -250,8 +250,8 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
                 "key": tests.FLICKR_KEY,
                 "secret": tests.FLICKR_SECRET
             },
-            "collection": {
-                "id": "test_collection"
+            "collection_set": {
+                "id": "test_collection_set"
             }
         }
 
