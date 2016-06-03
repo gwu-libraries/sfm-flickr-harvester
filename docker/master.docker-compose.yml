@@ -5,7 +5,7 @@ sfmrabbit:
         - "15672:15672"
     restart: always
     environment:
-        - TZ=EST
+        - TZ=America/New_York
         - RABBITMQ_DEFAULT_USER=sfm_user
         - RABBITMQ_DEFAULT_PASS=password
 sfmflickrharvester:
@@ -14,7 +14,7 @@ sfmflickrharvester:
         - sfmrabbit:mq
     restart: always
     environment:
-        - TZ=EST
+        - TZ=America/New_York
         - DEBUG=True
 sfmflickrexporter:
     image: gwul/sfm-flickr-exporter:master
@@ -22,5 +22,5 @@ sfmflickrexporter:
         - sfmrabbit:mq
     restart: always
     environment:
-        - TZ=EST
+        - TZ=America/New_York
         - DEBUG=True
