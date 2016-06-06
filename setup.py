@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sfmflickrharvester',
-    version='0.1.0',
+    version='0.5.1',
     url='https://github.com/gwu-libraries/sfm-flickr-harvester',
     author='Justin Littman',
     author_email='justinlittman@gmail.com',
