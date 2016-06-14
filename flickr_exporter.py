@@ -26,7 +26,7 @@ class FlickrPhotoTable(BaseTable):
             if url["type"] == "photopage":
                 photopage_url = url["_content"]
         return (item["id"], item["dates"]["posted"], item["dates"]["taken"], item["license"], item["safety_level"],
-                item["originalformat"], item["owner"]["nsid"], item["owner"]["username"],
+                item.get("originalformat"), item["owner"]["nsid"], item["owner"]["username"],
                 item["title"]["_content"].replace('\n', ' '),
                 item["description"]["_content"].replace('\n', ' '), item["media"], photopage_url)
 
