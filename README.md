@@ -3,16 +3,15 @@ A harvester for flickr content as part of [Social Feed Manager](https://gwu-libr
 
 [![Build Status](https://travis-ci.org/gwu-libraries/sfm-flickr-harvester.svg?branch=master)](https://travis-ci.org/gwu-libraries/sfm-flickr-harvester)
 
-## Installing
-    git clone https://github.com/gwu-libraries/sfm-flickr-harvester.git
-    cd sfm-flickr-harvester
-    pip install -r requirements/requirements.txt
+## Development
 
-Note that `requirements/requirements.txt` references the latest releast of warcprox-gwu and sfm-utils.
-If you are doing development on the interaction between warcprox-gwu, sfm-utils, and sfm-twitter-harvester,
-use `requirements/dev.txt`. This uses a local copy of warcprox-gwu (`../warcprox`) and sfm-utils (`../sfm-utils`)
-in editable mode.
+For information on development and running tests, see the [development documentation](http://sfm.readthedocs.io/en/latest/development.html).
 
+When running tests, provide Flickr credentials either as a `test_config.py` file or environment variables (`FLICKR_KEY`,
+`FLICKR_SECRET`).  An example `test_config.py` looks like:
+
+    FLICKR_KEY = "acbdfdfe6b8bba356e8ef278ed65dbbc8"
+    FLICKR_SECRET = "16264549fc54cc33eb"
 
 ## Running harvester as a service
 Flickr harvester will act on harvest start messages received from a queue. To run as a service:
@@ -37,37 +36,6 @@ Flickr exporter will act on export start messages received from a queue. To run 
 Flickr exporter can process export start files. The format of an export start file is the same as an export start message.  To run:
 
     python flickr_exporter.py file <path to file> <SFM UI REST API url>
-
-
-## Tests
-For all tests:
-
-* Get a [flickr api key](https://www.flickr.com/services/api/misc.api_keys.html).
-* Provide the key and secret to the tests. This can be done either by putting them in a file named `test_config.py`
-or in environment variables (`FLICKR_KEY` and `FLICKR_SECRET`).  An example `test_config.py` looks like:
-
-    FLICKR_KEY = "acbdfdfe6b8bba356e8ef278ed65dbbc8"
-    FLICKR_SECRET = "16264549fc54cc33eb"
-
-
-### Unit tests
-    python -m unittest discover
-
-### Integration tests (inside docker containers)
-1. Install [Docker](https://docs.docker.com/installation/) and [Docker-Compose](https://docs.docker.com/compose/install/).
-2. Start up the containers.
-
-        docker-compose -f docker/dev.docker-compose.yml up -d
-
-3. Run the tests.
-
-        docker exec docker_sfmflickrharvester_1 python -m unittest discover
-
-4. Shutdown containers.
-
-        docker-compose -f docker/dev.docker-compose.yml kill
-        docker-compose -f docker/dev.docker-compose.yml rm -v --force
-        
 
 ## Harvest start messages
 Following is information necessary to construct a harvest start message for the flickr harvester.
