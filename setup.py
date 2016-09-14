@@ -10,7 +10,7 @@ setup(
     platforms=['POSIX'],
     test_suite='tests',
     scripts=['flickr_harvester.py',
-             'flickr_photo_warc_iter.py'],
+             'flickr_warc_iter.py'],
     install_requires=['sfmutils'],
     tests_require=['mock>=1.3.0'],
     classifiers=[
