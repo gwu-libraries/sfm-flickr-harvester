@@ -11,8 +11,8 @@ ROUTING_KEY = "harvest.start.flickr.*"
 
 
 class FlickrHarvester(BaseHarvester):
-    def __init__(self, working_path, mq_config=None, debug=False, per_page=None):
-        BaseHarvester.__init__(self, working_path, mq_config=mq_config, debug=debug)
+    def __init__(self, working_path, mq_config=None, debug=False, per_page=None, debug_warcprox=False):
+        BaseHarvester.__init__(self, working_path, mq_config=mq_config, debug=debug, debug_warcprox=debug_warcprox)
         self.api = None
         # For testing purposes
         self.per_page = per_page
