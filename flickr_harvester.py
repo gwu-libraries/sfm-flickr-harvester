@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import logging
 import flickrapi
 from sfmutils.harvester import BaseHarvester, Msg, CODE_TOKEN_NOT_FOUND, CODE_UID_NOT_FOUND, CODE_UNKNOWN_ERROR
+from flickr_warc_iter import FlickrWarcIter, TYPE_FLICKR_PHOTO
 
 log = logging.getLogger(__name__)
 
@@ -10,8 +11,9 @@ ROUTING_KEY = "harvest.start.flickr.*"
 
 
 class FlickrHarvester(BaseHarvester):
-    def __init__(self, mq_config=None, debug=False, per_page=None):
-        BaseHarvester.__init__(self, mq_config=mq_config, debug=debug)
+    def __init__(self, working_path, mq_config=None, debug=False, per_page=None, debug_warcprox=False, tries=3):
+        BaseHarvester.__init__(self, working_path, mq_config=mq_config, debug=debug, debug_warcprox=debug_warcprox,
+                               tries=tries)
         self.api = None
         # For testing purposes
         self.per_page = per_page
@@ -35,29 +37,26 @@ class FlickrHarvester(BaseHarvester):
 
     def users(self):
         # Options
-        options = self.message.get("options", {})
-        incremental = options.get("incremental", True)
-        sizes = options.get("sizes", ("Thumbnail", "Large", "Original"))
+        incremental = self.message.get("options", {}).get("incremental", True)
 
         for seed in self.message.get("seeds", []):
-            self._user(seed.get("id"), seed.get("token"), seed.get("uid"), incremental, sizes)
-            if not self.harvest_result.success:
+            self._user(seed.get("id"), seed.get("token"), seed.get("uid"), incremental)
+            if not self.result.success:
                 break
 
-    def _user(self, seed_id, username, nsid, incremental, sizes):
-        log.info("Harvesting user %s with seed_id %s. Incremental is %s. Sizes is %s", username, seed_id, incremental,
-                 sizes)
+    def _user(self, seed_id, username, nsid, incremental):
+        log.info("Harvesting user %s with seed_id %s. Incremental is %s.", username, seed_id, incremental)
         assert username or nsid
         # Lookup nsid
         if username and not nsid:
             nsid = self._lookup_nsid(username)
             if nsid:
                 # Report back if nsid found
-                self.harvest_result.uids[seed_id] = nsid
+                self.result.uids[seed_id] = nsid
             else:
                 msg = "NSID not found for user {}".format(username)
                 log.exception(msg)
-                self.harvest_result.warnings.append(Msg(CODE_TOKEN_NOT_FOUND, msg))
+                self.result.warnings.append(Msg(CODE_TOKEN_NOT_FOUND, msg))
                 return
 
         # Get info on the user
@@ -66,18 +65,18 @@ class FlickrHarvester(BaseHarvester):
             if resp["code"] == 1:
                 msg = "NSID {} not found".format(nsid)
                 log.warning(msg)
-                self.harvest_result.warnings.append(Msg(CODE_UID_NOT_FOUND, msg))
+                self.result.warnings.append(Msg(CODE_UID_NOT_FOUND, msg))
             else:
                 msg = "Error returned by API: {}".format(resp["message"])
                 log.error(msg)
-                self.harvest_result.errors.append(Msg(CODE_UNKNOWN_ERROR, msg))
-                self.harvest_result.success = False
+                self.result.errors.append(Msg(CODE_UNKNOWN_ERROR, msg))
+                self.result.success = False
             return
 
         # Extract username
         new_username = resp["person"]["username"]["_content"]
         if new_username != username:
-            self.harvest_result.token_updates[seed_id] = new_username
+            self.result.token_updates[seed_id] = new_username
 
         page = 0
         # This is a dummy value. Will get actual value when call getPublicPhotos()
@@ -113,35 +112,21 @@ class FlickrHarvester(BaseHarvester):
         log.debug("Harvesting %s of %s photos", len(to_harvest_photo_ids), len(photo_ids))
 
         # Harvest photos
-        new_last_photo_id = None
         for (photo_id, secret) in to_harvest_photo_ids:
-            self._photo(photo_id, secret, sizes)
-            if not self.harvest_result.success:
+            self._photo(photo_id, secret)
+            if not self.result.success:
                 break
-            new_last_photo_id = photo_id
 
-        # Save new last photo id for future incremental
-        if new_last_photo_id:
-            log.debug("New last photo id is %s", new_last_photo_id)
-            self.state_store.set_state(__name__, "{}.last_photo_id".format(nsid), new_last_photo_id)
-
-    def _photo(self, photo_id, secret, sizes):
-        log.info("Harvesting photo %s. Sizes is %s", photo_id, sizes)
+    def _photo(self, photo_id, secret):
+        log.info("Harvesting photo %s.", photo_id)
 
         # Get info
         self.api.photos.getInfo(photo_id=photo_id, secret=secret, format='parsed-json')
 
         # Get sizes
-        resp = self.api.photos.getSizes(photo_id=photo_id, format='parsed-json')
-        for size in resp["sizes"]["size"]:
-            if size["label"] in sizes:
-                log.debug("Adding url for %s", size["label"])
-                self.harvest_result.urls.append(size["source"])
-            else:
-                log.debug("Skipping url for %s", size["label"])
+        self.api.photos.getSizes(photo_id=photo_id, format='parsed-json')
 
-        # Increment summary
-        self.harvest_result.increment_stats("flickr photos")
+        self.result.harvest_counter["flickr photos"] += 1
 
     def _lookup_nsid(self, username):
         """
@@ -155,6 +140,34 @@ class FlickrHarvester(BaseHarvester):
             nsid = find_resp["user"]["nsid"]
         log.debug("Looking up username %s returned %s", username, nsid)
         return nsid
+
+    def process_warc(self, warc_filepath):
+        sizes = self.message.get("options", {}).get("sizes", ("Thumbnail", "Large", "Original"))
+        incremental = self.message.get("options", {}).get("incremental", True)
+
+        warc_iter = FlickrWarcIter(warc_filepath)
+        count = 0
+        for item in warc_iter:
+            if item.type == TYPE_FLICKR_PHOTO:
+                count += 1
+                if not count % 10:
+                    log.debug("Processing %s photos", count)
+
+                # Increment summary
+                self.result.increment_stats("flickr photos")
+
+                # Update state
+                if incremental:
+                    photo = item.item
+                    self.state_store.set_state(__name__, "{}.last_photo_id".format(photo["owner"]["nsid"]), photo["id"])
+            else:
+                # Get sizes
+                for size in item.item["size"]:
+                    if size["label"] in sizes:
+                        log.debug("Adding url for %s", size["label"])
+                        self.result.urls.append(size["source"])
+                    else:
+                        log.debug("Skipping url for %s", size["label"])
 
 
 if __name__ == "__main__":

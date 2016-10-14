@@ -1,7 +1,6 @@
-from sfmutils.exporter import ExportResult, BaseExporter, BaseTable
-from flickr_photo_warc_iter import FlickrPhotoWarcIter
+from sfmutils.exporter import BaseExporter, BaseTable
+from flickr_warc_iter import FlickrWarcIter, TYPE_FLICKR_PHOTO
 import logging
-
 
 log = logging.getLogger(__name__)
 
@@ -13,8 +12,10 @@ class FlickrPhotoTable(BaseTable):
     """
     PETL Table for Flickr photos.
     """
+
     def __init__(self, warc_paths, dedupe, item_date_start, item_date_end, seed_uids):
-        BaseTable.__init__(self, warc_paths, dedupe, item_date_start, item_date_end, seed_uids, FlickrPhotoWarcIter)
+        BaseTable.__init__(self, warc_paths, dedupe, item_date_start, item_date_end, seed_uids, FlickrWarcIter,
+                           limit_item_types=[TYPE_FLICKR_PHOTO])
 
     def _header_row(self):
         return ("photo_id", "date_posted", "date_taken", "license", "safety_level", "original_format", "owner_nsid",
@@ -35,9 +36,9 @@ class FlickrPhotoTable(BaseTable):
 
 
 class FlickrExporter(BaseExporter):
-    def __init__(self, api_base_url, mq_config=None, warc_base_path=None):
-        BaseExporter.__init__(self, api_base_url, FlickrPhotoWarcIter, FlickrPhotoTable, mq_config=mq_config,
-                              warc_base_path=warc_base_path)
+    def __init__(self, api_base_url, working_path, mq_config=None, warc_base_path=None):
+        BaseExporter.__init__(self, api_base_url, FlickrWarcIter, FlickrPhotoTable, working_path,
+                              mq_config=mq_config, warc_base_path=warc_base_path, limit_item_types=[TYPE_FLICKR_PHOTO])
 
 
 if __name__ == "__main__":
