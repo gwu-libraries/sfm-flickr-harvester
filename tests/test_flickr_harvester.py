@@ -203,7 +203,9 @@ class TestFlickrHarvester(tests.TestCase):
 
     @patch("flickr_harvester.FlickrWarcIter", autospec=True)
     def test_process(self, iter_class):
-        self.harvester.message = base_message
+        message = copy.deepcopy(base_message)
+        message["options"]["image_sizes"] = ["Thumbnail", "Original"]
+        self.harvester.message = message
 
         mock_iter = MagicMock(spec=FlickrWarcIter)
         mock_iter.__iter__.side_effect = [[IterItem(TYPE_FLICKR_PHOTO, None, None, None, photo1),
@@ -215,7 +217,6 @@ class TestFlickrHarvester(tests.TestCase):
 
         self.assertEqual(1, self.harvester.result.stats_summary()["flickr photos"])
         self.assertEqual(["https://farm9.staticflickr.com/8710/16609036938_6ed7e2331e_t.jpg",
-                          "https://farm9.staticflickr.com/8710/16609036938_6ed7e2331e_b.jpg",
                           "https://farm9.staticflickr.com/8710/16609036938_c43658236e_o.jpg"],
                          self.harvester.result.urls)
 

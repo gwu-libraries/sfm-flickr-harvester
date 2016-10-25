@@ -142,7 +142,7 @@ class FlickrHarvester(BaseHarvester):
         return nsid
 
     def process_warc(self, warc_filepath):
-        sizes = self.message.get("options", {}).get("sizes", ("Thumbnail", "Large", "Original"))
+        sizes = self.message.get("options", {}).get("image_sizes", ("Thumbnail", "Large", "Original"))
         incremental = self.message.get("options", {}).get("incremental", True)
 
         warc_iter = FlickrWarcIter(warc_filepath)
