@@ -1,6 +1,8 @@
 from sfmutils.exporter import BaseExporter, BaseTable
 from flickr_warc_iter import FlickrWarcIter, TYPE_FLICKR_PHOTO
 import logging
+import time
+from dateutil.parser import parse as date_parse
 
 log = logging.getLogger(__name__)
 
@@ -26,7 +28,11 @@ class FlickrPhotoTable(BaseTable):
         for url in item["urls"]["url"]:
             if url["type"] == "photopage":
                 photopage_url = url["_content"]
-        return (item["id"], item["dates"]["posted"], item["dates"]["taken"], item["license"], item["safety_level"],
+        return (item["id"],
+                # date posted is gmt epoch time, convert it to the same format as date taken
+                # detail as https://www.flickr.com/services/api/misc.dates.html
+                date_parse(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(float(item["dates"]["posted"])))),
+                date_parse(item["dates"]["taken"]), item["license"], item["safety_level"],
                 item.get("originalformat"), item["owner"]["nsid"], item["owner"]["username"],
                 item["title"]["_content"].replace('\n', ' '),
                 item["description"]["_content"].replace('\n', ' '), item["media"], photopage_url)
