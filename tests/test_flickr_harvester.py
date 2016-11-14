@@ -34,6 +34,9 @@ base_message = {
     "collection_set": {
         "id": "test_collection_set"
     },
+    "collection": {
+        "id": "test_collection"
+    },
     "options": {}
 }
 
@@ -271,6 +274,9 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             },
             "collection_set": {
                 "id": "test_collection_set"
+            },
+            "collection": {
+                "id": "test_collection"
             }
         }
 
