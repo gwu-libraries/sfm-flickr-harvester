@@ -44,6 +44,7 @@ class TestFlickrExporter(tests.TestCase):
                 "id": "005b131f5f854402afa2b08a4b7ba960"
             },
             "format": "csv",
+            "segment_size": None,
             "path": self.export_path
         }
 
@@ -51,7 +52,7 @@ class TestFlickrExporter(tests.TestCase):
         self.exporter.on_message()
 
         self.assertTrue(self.exporter.result.success)
-        csv_filepath = os.path.join(self.export_path, "test1.csv")
+        csv_filepath = os.path.join(self.export_path, "test1_001.csv")
         self.assertTrue(os.path.exists(csv_filepath))
         with open(csv_filepath, "r") as f:
             lines = f.readlines()
@@ -73,13 +74,14 @@ class TestFlickrExporter(tests.TestCase):
                 }
             ],
             "format": "csv",
+            "segment_size": None,
             "path": self.export_path
         }
         self.exporter.message = export_message
         self.exporter.on_message()
 
         self.assertTrue(self.exporter.result.success)
-        csv_filepath = os.path.join(self.export_path, "test5.csv")
+        csv_filepath = os.path.join(self.export_path, "test5_001.csv")
         self.assertTrue(os.path.exists(csv_filepath))
         with open(csv_filepath, "r") as f:
             lines = f.readlines()
@@ -97,18 +99,26 @@ class TestFlickrPhotoTable(tests.TestCase):
                                         "-8000.warc.gz"))
 
     def test_table(self):
-        table = FlickrPhotoTable(self.warc_paths, False, None, None, None)
-        count = 0
-        for count, row in enumerate(table):
-            if count == 0:
-                # Header row
-                # Just testing first and last, figuring these might change often.
-                self.assertEqual("photo_id", row[0])
-                self.assertEqual("photopage", row[-1])
-            if count == 1:
-                # First row
-                self.assertEqual("16610484049", row[0])
-                self.assertIsInstance(row[1], datetime)
-                self.assertIsInstance(row[2], datetime)
-                self.assertEqual("https://www.flickr.com/photos/131866249@N02/16610484049/", row[-1])
-        self.assertEqual(41, count)
+        tables = FlickrPhotoTable(self.warc_paths, False, None, None, None, segment_row_size=20)
+        chunk_count = total_count = 0
+        for idx, table in enumerate(tables):
+            chunk_count += 1
+            for count, row in enumerate(table):
+                total_count += 1
+                if count == 0:
+                    # Header row
+                    # Just testing first and last, figuring these might change often.
+                    self.assertEqual("photo_id", row[0])
+                    self.assertEqual("photopage", row[-1])
+                if idx == 0 and count == 1:
+                    # First row
+                    self.assertEqual("16610484049", row[0])
+                    self.assertEqual("https://www.flickr.com/photos/131866249@N02/16610484049/", row[-1])
+                if idx == 1 and count == 1:
+                    # First row
+                    self.assertEqual("7852009144", row[0])
+                    self.assertEqual("https://www.flickr.com/photos/85779209@N08/7852009144/", row[-1])
+
+        self.assertEqual(3, chunk_count)
+        # 1+20, 1+20, 1+1 with total rows 41 and 3 head in each files
+        self.assertEqual(44, total_count)

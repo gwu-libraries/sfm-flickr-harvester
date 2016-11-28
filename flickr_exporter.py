@@ -15,9 +15,9 @@ class FlickrPhotoTable(BaseTable):
     PETL Table for Flickr photos.
     """
 
-    def __init__(self, warc_paths, dedupe, item_date_start, item_date_end, seed_uids):
+    def __init__(self, warc_paths, dedupe, item_date_start, item_date_end, seed_uids, segment_row_size=None):
         BaseTable.__init__(self, warc_paths, dedupe, item_date_start, item_date_end, seed_uids, FlickrWarcIter,
-                           limit_item_types=[TYPE_FLICKR_PHOTO])
+                           segment_row_size=segment_row_size, limit_item_types=[TYPE_FLICKR_PHOTO])
 
     def _header_row(self):
         return ("photo_id", "date_posted", "date_taken", "license", "safety_level", "original_format", "owner_nsid",
