@@ -4,6 +4,7 @@ from flickr_exporter import FlickrExporter, FlickrPhotoTable
 import os
 import tempfile
 import shutil
+from datetime import datetime
 
 vcr = base_vcr.VCR(
     cassette_library_dir='tests/fixtures',
@@ -107,5 +108,7 @@ class TestFlickrPhotoTable(tests.TestCase):
             if count == 1:
                 # First row
                 self.assertEqual("16610484049", row[0])
+                self.assertIsInstance(row[1], datetime)
+                self.assertIsInstance(row[2], datetime)
                 self.assertEqual("https://www.flickr.com/photos/131866249@N02/16610484049/", row[-1])
         self.assertEqual(41, count)
