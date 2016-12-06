@@ -325,4 +325,3 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             counter += 1
         self.assertIsNotNone(message_obj, "Timed out waiting for result at {}.".format(datetime.now()))
         return message_obj.payload
-
