@@ -141,8 +141,8 @@ class TestFlickrHarvester(tests.TestCase):
         self.harvester.harvest_seeds()
 
         # Calls to _photo have been mocked out. Check mock.
-        self.assertEqual(5, mock_photo_method.call_count)
-        self.assertEqual(call(u'16609252680', u'cf6e1840e9'), mock_photo_method.mock_calls[0])
+        self.assertEqual(6, mock_photo_method.call_count)
+        self.assertEqual(call(u'16610484049', u'ee80d9ecdc'), mock_photo_method.mock_calls[0])
 
         # Check harvest result
         self.assertTrue(self.harvester.result.success)
@@ -160,7 +160,7 @@ class TestFlickrHarvester(tests.TestCase):
         self.harvester.message = message
 
         # Set state
-        self.harvester.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16609036938")
+        self.harvester.state_store.set_state("flickr_harvester", "131866249@N02.last_photo_id", "16610484049")
 
         self.harvester.harvest_seeds()
 

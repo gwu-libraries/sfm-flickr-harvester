@@ -99,15 +99,13 @@ class FlickrHarvester(BaseHarvester):
         if incremental:
             last_photo_id = self.state_store.get_state(__name__, "{}.last_photo_id".format(nsid))
             if last_photo_id:
+                # Photos are in most recently posted first order
                 photo_id_subset = []
-                found_last_photo_id = False
                 for photo_id, secret in photo_ids:
-                    if found_last_photo_id:
-                        photo_id_subset.append((photo_id, secret))
                     if last_photo_id == photo_id:
-                        found_last_photo_id = True
-                if found_last_photo_id:
-                    to_harvest_photo_ids = photo_id_subset
+                        break
+                    photo_id_subset.append((photo_id, secret))
+                to_harvest_photo_ids = photo_id_subset
 
         log.debug("Harvesting %s of %s photos", len(to_harvest_photo_ids), len(photo_ids))
 
