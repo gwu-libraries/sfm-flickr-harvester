@@ -254,12 +254,14 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             flickr_harvester_queue(connection).declare()
             flickr_harvester_queue(connection).purge()
 
-        self.harvest_path = tempfile.mkdtemp()
+        self.harvest_path = None
 
     def tearDown(self):
-        shutil.rmtree(self.harvest_path, ignore_errors=True)
+        if self.harvest_path:
+            shutil.rmtree(self.harvest_path, ignore_errors=True)
 
     def test_user(self):
+        self.harvest_path = "/sfm-data/collection_set/test_collection/test_1"
         harvest_msg = {
             "id": "test:1",
             "type": "flickr_user",
