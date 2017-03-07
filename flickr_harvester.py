@@ -56,7 +56,7 @@ class FlickrHarvester(BaseHarvester):
             else:
                 msg = "NSID not found for user {}".format(username)
                 log.exception(msg)
-                self.result.warnings.append(Msg(CODE_TOKEN_NOT_FOUND, msg))
+                self.result.warnings.append(Msg(CODE_TOKEN_NOT_FOUND, msg, seed_id=seed_id))
                 return
 
         # Get info on the user
@@ -65,7 +65,7 @@ class FlickrHarvester(BaseHarvester):
             if resp["code"] == 1:
                 msg = "NSID {} not found".format(nsid)
                 log.warning(msg)
-                self.result.warnings.append(Msg(CODE_UID_NOT_FOUND, msg))
+                self.result.warnings.append(Msg(CODE_UID_NOT_FOUND, msg, seed_id=seed_id))
             else:
                 msg = "Error returned by API: {}".format(resp["message"])
                 log.error(msg)
