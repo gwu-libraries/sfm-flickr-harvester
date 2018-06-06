@@ -236,15 +236,11 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
         self.exchange = Exchange(EXCHANGE, type="topic")
         self.result_queue = Queue(name="result_queue", routing_key="harvest.status.flickr.*", exchange=self.exchange,
                                   durable=True)
-        self.web_harvest_queue = Queue(name="web_harvest_queue", routing_key="harvest.start.web",
-                                       exchange=self.exchange)
         self.warc_created_queue = Queue(name="warc_created_queue", routing_key="warc_created", exchange=self.exchange)
         flickr_harvester_queue = Queue(name="flickr_harvester", exchange=self.exchange)
         with self._create_connection() as connection:
             self.result_queue(connection).declare()
             self.result_queue(connection).purge()
-            self.web_harvest_queue(connection).declare()
-            self.web_harvest_queue(connection).purge()
             self.warc_created_queue(connection).declare()
             self.warc_created_queue(connection).purge()
             # By declaring this, avoid race situation where harvester may not be up yet.
@@ -303,11 +299,6 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             self.assertEqual(STATUS_SUCCESS, result_msg["status"])
             # And some photos
             self.assertTrue(result_msg["stats"][date.today().isoformat()]["flickr photos"])
-
-            # Web harvest message.
-            web_harvest_msg = self._wait_for_message(self.web_harvest_queue, connection)
-            # Some seeds
-            self.assertTrue(len(web_harvest_msg["seeds"]))
 
             # Warc created message.
             warc_msg = self._wait_for_message(self.warc_created_queue, connection)
