@@ -7,9 +7,9 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.9.1]
     method: GET
-    uri: http://192.168.99.100:8081/api/v1/warcs/?collection=005b131f5f854402afa2b08a4b7ba960&exclude_web=True
+    uri: http://192.168.99.100:8081/api/v1/warcs/?collection=005b131f5f854402afa2b08a4b7ba960
   response:
-    body: {string: !!python/unicode '[{"warc_id":"9dc0b9c3a93a49eb8f713330b43f954c","path":"1/2016/02/22/14/d8ecf0efa0fa49819f907930bb766f69-20160222143902368-00000-70-551fcc0ef48b-8000.warc.gz","sha1":"000ffb3371eadb507d77d181ca3f0c5d3c74a2fc","bytes":460518,"date_created":"2016-02-22T14:49:07Z"},{"warc_id":"d3f524b52de0495b9abbf3b36b1fb06f","path":"1/2016/02/22/14/612bc180ec8346c4bbc5aa2c52dcc952-20160222143621927-00000-37-551fcc0ef48b-8000.warc.gz","sha1":"28076c245bc23d5e18e8531c19700dec869e2f9a","bytes":58048,"date_created":"2016-02-22T14:37:26Z"}]'}
+    body: {string: !!python/unicode '{"results": [{"warc_id":"9dc0b9c3a93a49eb8f713330b43f954c","path":"1/2016/02/22/14/d8ecf0efa0fa49819f907930bb766f69-20160222143902368-00000-70-551fcc0ef48b-8000.warc.gz","sha1":"000ffb3371eadb507d77d181ca3f0c5d3c74a2fc","bytes":460518,"date_created":"2016-02-22T14:49:07Z"},{"warc_id":"d3f524b52de0495b9abbf3b36b1fb06f","path":"1/2016/02/22/14/612bc180ec8346c4bbc5aa2c52dcc952-20160222143621927-00000-37-551fcc0ef48b-8000.warc.gz","sha1":"28076c245bc23d5e18e8531c19700dec869e2f9a","bytes":58048,"date_created":"2016-02-22T14:37:26Z"}],"next":null}'}
     headers:
       allow: ['GET, HEAD, OPTIONS']
       content-type: [application/json]

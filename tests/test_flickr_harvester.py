@@ -219,9 +219,6 @@ class TestFlickrHarvester(tests.TestCase):
         self.harvester.process_warc("test.warc.gz")
 
         self.assertEqual(1, self.harvester.result.stats_summary()["flickr photos"])
-        self.assertEqual(["https://farm9.staticflickr.com/8710/16609036938_6ed7e2331e_t.jpg",
-                          "https://farm9.staticflickr.com/8710/16609036938_c43658236e_o.jpg"],
-                         self.harvester.result.urls)
 
         # Check state store
         self.assertEqual("16609036938",

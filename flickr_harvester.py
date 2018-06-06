@@ -140,7 +140,6 @@ class FlickrHarvester(BaseHarvester):
         return nsid
 
     def process_warc(self, warc_filepath):
-        sizes = self.message.get("options", {}).get("image_sizes", ("Thumbnail", "Large", "Original"))
         incremental = self.message.get("options", {}).get("incremental", True)
 
         warc_iter = FlickrWarcIter(warc_filepath)
@@ -158,14 +157,6 @@ class FlickrHarvester(BaseHarvester):
                 if incremental:
                     photo = item.item
                     self.state_store.set_state(__name__, "{}.last_photo_id".format(photo["owner"]["nsid"]), photo["id"])
-            else:
-                # Get sizes
-                for size in item.item["size"]:
-                    if size["label"] in sizes:
-                        log.debug("Adding url for %s", size["label"])
-                        self.result.urls.append(size["source"])
-                    else:
-                        log.debug("Skipping url for %s", size["label"])
 
 
 if __name__ == "__main__":
