@@ -1,13 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import absolute_import
 from sfmutils.warc_iter import BaseWarcIter
 from datetime import datetime
 import pytz
-import urlparse
+from urllib.parse import urlparse, parse_qs
 
 TYPE_FLICKR_PHOTO = "flickr_photo"
 TYPE_FLICKR_SIZES = "flickr_sizes"
+
 
 class FlickrWarcIter(BaseWarcIter):
     def __init__(self, filepaths, limit_owner_nsids=None):
@@ -28,7 +29,7 @@ class FlickrWarcIter(BaseWarcIter):
         else:
             if json_obj["stat"] == "ok":
                 # Need to split url to get photo id
-                yield TYPE_FLICKR_SIZES, urlparse.parse_qs(urlparse.urlparse(url).query)["photo_id"][0], None, json_obj[
+                yield TYPE_FLICKR_SIZES, parse_qs(urlparse(url).query)["photo_id"][0], None, json_obj[
                     "sizes"]
             else:
                 yield TYPE_FLICKR_SIZES, None, None, None
