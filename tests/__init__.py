@@ -4,7 +4,7 @@ import os
 import socket
 
 try:
-    from test_config import *
+    from .test_config import *
 except ImportError:
     FLICKR_KEY = os.environ.get("FLICKR_KEY")
     FLICKR_SECRET = os.environ.get("FLICKR_SECRET")

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import tests
 import vcr as base_vcr
 from flickr_harvester import FlickrHarvester
