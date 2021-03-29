@@ -4,12 +4,12 @@ import os
 import socket
 
 try:
-    from tests import test_config
+    from tests.test_config import FLICKR_KEY, FLICKR_SECRET
 except ImportError:
     FLICKR_KEY = os.environ.get("FLICKR_KEY")
     FLICKR_SECRET = os.environ.get("FLICKR_SECRET")
 
-test_config_available = True if test_config.FLICKR_KEY and test_config.FLICKR_SECRET else False
+test_config_available = True if FLICKR_KEY and FLICKR_SECRET else False
 
 mq_port_available = True
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
