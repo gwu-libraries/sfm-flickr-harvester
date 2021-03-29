@@ -265,7 +265,7 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
             }],
             "credentials": {
                 "key": tests.FLICKR_KEY,
-                "secret": tests.FLICKR_KEY
+                "secret": tests.FLICKR_SECRET
             },
             "collection_set": {
                 "id": "test_collection_set"
