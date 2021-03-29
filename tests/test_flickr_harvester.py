@@ -1,5 +1,4 @@
 import tests
-from tests.test_config import FLICKR_KEY, FLICKR_SECRET
 import vcr as base_vcr
 from flickr_harvester import FlickrHarvester
 from sfmutils.state_store import DictHarvestStateStore
@@ -29,8 +28,8 @@ base_message = {
     "path": "/collections/test_collection_set/collection_id",
     "seeds": [],
     "credentials": {
-        "key": FLICKR_KEY or "fake key",
-        "secret": FLICKR_SECRET or "fake secret"
+        "key": tests.FLICKR_KEY or "fake key",
+        "secret": tests.FLICKR_SECRET or "fake secret"
     },
     "collection_set": {
         "id": "test_collection_set"
@@ -265,8 +264,8 @@ class TestFlickrHarvesterIntegration(tests.TestCase):
                 "uid": "131866249@N02"
             }],
             "credentials": {
-                "key": FLICKR_KEY,
-                "secret": FLICKR_SECRET
+                "key": tests.FLICKR_KEY,
+                "secret": tests.FLICKR_KEY
             },
             "collection_set": {
                 "id": "test_collection_set"
