@@ -11,7 +11,7 @@ class TestFlickrWarcIter(tests.TestCase):
     def test_no_limit(self):
         warc_iter = FlickrWarcIter(self.filepaths)
         photos = list(warc_iter.iter(limit_item_types=[TYPE_FLICKR_PHOTO]))
-        self.assertEquals(12, len(photos))
+        self.assertEqual(12, len(photos))
         self.assertEqual("flickr_photo", photos[0][0])
         self.assertEqual("16610484049", photos[0][1])
         # Datetime is aware
