@@ -4,8 +4,8 @@ services:
       image: rabbitmq@sha256:397382d2b222f3a298a6c74e93f348fb16f9a7fde2c02ba14122624d852daae3
       environment:
           - TZ=America/New_York
-          - RABBITMQ_DEFAULT_USER=sfm_user
-          - RABBITMQ_DEFAULT_PASS=password
+          - SFM_RABBITMQ_DEFAULT_USER=sfm_user
+          - SFM_RABBITMQ_DEFAULT_PASS=password
   data:
       image: gwul/sfm-data:master
       volumes:
@@ -15,7 +15,10 @@ services:
           - SFM_UID=900
           - SFM_GID=900
   flickrharvester:
-      image: gwul/sfm-flickr-harvester:master
+      # image: gwul/sfm-flickr-harvester:master
+      build:
+          context: ..
+          dockerfile: Dockerfile-harvester
       links:
           - rabbit:mq
       volumes:
@@ -27,8 +30,10 @@ services:
           - FLICKR_KEY
           - FLICKR_SECRET
           - SFM_REQS=master
-          - RABBITMQ_USER=sfm_user
-          - RABBITMQ_PASSWORD=password
+          - SFM_RABBITMQ_USER=sfm_user
+          - SFM_RABBITMQ_PASSWORD=password
+          - SFM_RABBITMQ_HOST=mq
+          - SFM_RABBITMQ_PORT=5672
           - DEBUG=true
           - HARVEST_TRIES=3
           - SFM_UID=900
