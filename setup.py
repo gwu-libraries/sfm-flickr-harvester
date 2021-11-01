@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sfmflickrharvester',
-    version='2.4.0',
+    version='2.5.0',
     url='https://github.com/gwu-libraries/sfm-flickr-harvester',
     author='Social Feed Manager',
     author_email='sfm@gwu.edu',
