@@ -1,6 +1,6 @@
 flickrapi==2.1.1
 python-dateutil==2.7.5
-pytz==2019.3
+pytz==2022.1
 
 # Pinning to correct version for sfm-utils
 requests==2.22.0
